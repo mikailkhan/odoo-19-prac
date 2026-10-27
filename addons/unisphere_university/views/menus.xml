@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Root UniSphere Navigation Menu -->
+    <menuitem id="menu_unisphere_root"
+              name="UniSphere"
+              web_icon="unisphere_university,static/description/icon.png"
+              sequence="15"/>
+
+    <!-- 1. Overview / Dashboard Category -->
+    <menuitem id="menu_unisphere_overview"
+              name="Overview"
+              parent="menu_unisphere_root"
+              sequence="10"/>
+
+    <!-- 2. Academic Operations Category -->
+    <menuitem id="menu_unisphere_academics"
+              name="Academics"
+              parent="menu_unisphere_root"
+              sequence="20"/>
+
+    <!-- 3. People (Students & Faculty) Category -->
+    <menuitem id="menu_unisphere_people"
+              name="Students &amp; Faculty"
+              parent="menu_unisphere_root"
+              sequence="30"/>
+
+    <!-- 4. Class Operations (Enrollments & Attendance) Category -->
+    <menuitem id="menu_unisphere_operations"
+              name="Class Operations"
+              parent="menu_unisphere_root"
+              sequence="40"/>
+
+    <!-- 5. Assessments & Gradebook Category -->
+    <menuitem id="menu_unisphere_grading"
+              name="Grades &amp; Exams"
+              parent="menu_unisphere_root"
+              sequence="50"/>
+
+    <!-- 6. Finance & Bursar Category -->
+    <menuitem id="menu_unisphere_finance"
+              name="Bursar &amp; Fees"
+              parent="menu_unisphere_root"
+              sequence="60"/>
+
+    <!-- 7. Configuration Category (Restricted to Admins) -->
+    <menuitem id="menu_unisphere_config"
+              name="Configuration"
+              parent="menu_unisphere_root"
+              groups="group_unisphere_admin"
+              sequence="100"/>
+</odoo>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Module Category for UniSphere Roles -->
+    <record id="module_category_unisphere" model="ir.module.category">
+        <field name="name">UniSphere University</field>
+        <field name="description">User roles and permission levels for UniSphere University ERP.</field>
+        <field name="sequence">25</field>
+    </record>
+
+    <!-- Privilege Grouping (Odoo 19 Privilege Layer) -->
+    <record id="res_groups_privilege_unisphere" model="res.groups.privilege">
+        <field name="name">UniSphere Access</field>
+        <field name="category_id" ref="module_category_unisphere"/>
+        <field name="sequence">10</field>
+    </record>
+
+    <!-- Faculty Member Group (Internal Staff) -->
+    <record id="group_unisphere_faculty" model="res.groups">
+        <field name="name">Faculty Member</field>
+        <field name="privilege_id" ref="res_groups_privilege_unisphere"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="comment">Teaching staff with permissions to record attendance and grades for assigned sections.</field>
+    </record>
+
+    <!-- University Administrator Group (Full ERP Access) -->
+    <record id="group_unisphere_admin" model="res.groups">
+        <field name="name">University Administrator</field>
+        <field name="privilege_id" ref="res_groups_privilege_unisphere"/>
+        <field name="implied_ids" eval="[(4, ref('group_unisphere_faculty'))]"/>
+        <field name="user_ids" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+        <field name="comment">Full administrative access to academic structures, student rosters, fee ledgers, and configurations.</field>
+    </record>
+
+    <!-- Student Portal User Group (External Portal User) -->
+    <record id="group_unisphere_student" model="res.groups">
+        <field name="name">Student Portal User</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_portal'))]"/>
+        <field name="comment">Enrolled students accessing grades, course schedules, and fee ledgers via the web portal.</field>
+    </record>
+</odoo>
