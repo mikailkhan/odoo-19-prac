@@ -1,2 +1,5 @@
 # -*- coding: utf-8 -*-
-# Models will be imported here in Phase 2
+from . import department
+from . import academic_term
+from . import course
+from . import course_section

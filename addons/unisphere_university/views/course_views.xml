@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Course List View -->
+    <record id="view_unisphere_course_list" model="ir.ui.view">
+        <field name="name">unisphere.course.list</field>
+        <field name="model">unisphere.course</field>
+        <field name="arch" type="xml">
+            <list string="Course Catalog" sample="1">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="department_id"/>
+                <field name="credit_hours"/>
+                <field name="section_count" string="Active Sections"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Course Form View -->
+    <record id="view_unisphere_course_form" model="ir.ui.view">
+        <field name="name">unisphere.course.form</field>
+        <field name="model">unisphere.course</field>
+        <field name="arch" type="xml">
+            <form string="Academic Course">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_sections"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-tasks">
+                            <field name="section_count" widget="statinfo" string="Sections"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <label for="code" class="oe_edit_only" string="Course Code"/>
+                        <h1>
+                            <field name="code" placeholder="e.g. CS101" class="oe_inline"/>
+                        </h1>
+                        <label for="name" class="oe_edit_only" string="Course Title"/>
+                        <h2>
+                            <field name="name" placeholder="e.g. Introduction to Computing"/>
+                        </h2>
+                    </div>
+                    <group>
+                        <group string="Academic Classification">
+                            <field name="department_id"/>
+                            <field name="credit_hours"/>
+                        </group>
+                        <group string="Settings">
+                            <field name="active" widget="boolean_toggle"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Syllabus &amp; Learning Objectives" name="description_page">
+                            <field name="description" placeholder="Specify course topics, textbooks, and prerequisite expectations..."/>
+                        </page>
+                        <page string="Current &amp; Past Offerings" name="sections_page">
+                            <field name="section_ids" readonly="1">
+                                <list>
+                                    <field name="section_code"/>
+                                    <field name="term_id"/>
+                                    <field name="instructor_id"/>
+                                    <field name="classroom"/>
+                                    <field name="capacity"/>
+                                    <field name="seats_available"/>
+                                    <field name="state" widget="badge"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Course Search View -->
+    <record id="view_unisphere_course_search" model="ir.ui.view">
+        <field name="name">unisphere.course.search</field>
+        <field name="model">unisphere.course</field>
+        <field name="arch" type="xml">
+            <search string="Search Courses">
+                <field name="name" filter_domain="['|', ('name', 'ilike', self), ('code', 'ilike', self)]"/>
+                <field name="code"/>
+                <field name="department_id"/>
+                <separator/>
+                <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+                <group>
+                    <filter string="Department" name="group_by_department" context="{'group_by': 'department_id'}"/>
+                    <filter string="Credit Hours" name="group_by_credits" context="{'group_by': 'credit_hours'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Window Action -->
+    <record id="action_unisphere_course" model="ir.actions.act_window">
+        <field name="name">Courses</field>
+        <field name="res_model">unisphere.course</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_unisphere_course_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Add a course to your curriculum catalog!
+            </p>
+            <p>
+                Define courses with credit hours and department affiliations. Courses can then be offered in multiple sections each semester.
+            </p>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- 1. Academic Departments -->
+    <record id="dept_cs" model="unisphere.department">
+        <field name="name">Department of Computer Science</field>
+        <field name="code">CS</field>
+        <field name="description">Pioneering computing education, software development, theoretical algorithms, and distributed computing.</field>
+    </record>
+
+    <record id="dept_se" model="unisphere.department">
+        <field name="name">Department of Software Engineering</field>
+        <field name="code">SE</field>
+        <field name="description">Focusing on enterprise software architecture, full-stack methodologies, cloud DevOps, and engineering quality assurance.</field>
+    </record>
+
+    <record id="dept_ee" model="unisphere.department">
+        <field name="name">Department of Electrical Engineering</field>
+        <field name="code">EE</field>
+        <field name="description">Specializing in digital systems, linear signal processing, power electronics, and embedded microcontrollers.</field>
+    </record>
+
+    <record id="dept_ai" model="unisphere.department">
+        <field name="name">Department of Artificial Intelligence</field>
+        <field name="code">AI</field>
+        <field name="description">Dedicated to machine learning, neural networks, natural language processing, and autonomous robotic agents.</field>
+    </record>
+
+    <record id="dept_ms" model="unisphere.department">
+        <field name="name">Department of Management Sciences</field>
+        <field name="code">MS</field>
+        <field name="description">Equipping future technology leaders with organizational management, tech entrepreneurship, and economics.</field>
+    </record>
+
+    <!-- 2. Academic Semesters / Terms -->
+    <record id="term_f24" model="unisphere.academic.term">
+        <field name="name">Fall 2024</field>
+        <field name="code">F24</field>
+        <field name="start_date">2024-09-01</field>
+        <field name="end_date">2025-01-31</field>
+        <field name="registration_start">2024-08-15</field>
+        <field name="registration_end">2024-09-15</field>
+        <field name="state">active</field>
+    </record>
+
+    <record id="term_s24" model="unisphere.academic.term">
+        <field name="name">Spring 2024</field>
+        <field name="code">S24</field>
+        <field name="start_date">2024-02-01</field>
+        <field name="end_date">2024-06-30</field>
+        <field name="registration_start">2024-01-15</field>
+        <field name="registration_end">2024-02-15</field>
+        <field name="state">closed</field>
+    </record>
+
+    <record id="term_f23" model="unisphere.academic.term">
+        <field name="name">Fall 2023</field>
+        <field name="code">F23</field>
+        <field name="start_date">2023-09-01</field>
+        <field name="end_date">2024-01-31</field>
+        <field name="registration_start">2023-08-15</field>
+        <field name="registration_end">2023-09-15</field>
+        <field name="state">closed</field>
+    </record>
+
+    <!-- 3. Course Catalog -->
+    <record id="course_cs101" model="unisphere.course">
+        <field name="name">Introduction to Computing</field>
+        <field name="code">CS101</field>
+        <field name="department_id" ref="dept_cs"/>
+        <field name="credit_hours">3</field>
+        <field name="description">Foundations of computer systems, algorithmic problem solving, binary architecture, and introductory Python programming.</field>
+    </record>
+
+    <record id="course_cs201" model="unisphere.course">
+        <field name="name">Data Structures &amp; Algorithms</field>
+        <field name="code">CS201</field>
+        <field name="department_id" ref="dept_cs"/>
+        <field name="credit_hours">4</field>
+        <field name="description">Abstract data types, dynamic arrays, linked lists, trees, graphs, sorting algorithms, and asymptotic complexity analysis.</field>
+    </record>
+
+    <record id="course_se301" model="unisphere.course">
+        <field name="name">Software Architecture &amp; Design</field>
+        <field name="code">SE301</field>
+        <field name="department_id" ref="dept_se"/>
+        <field name="credit_hours">3</field>
+        <field name="description">Architectural patterns, microservices vs monoliths, design principles (SOLID), UML modeling, and component coupling.</field>
+    </record>
+
+    <record id="course_ee101" model="unisphere.course">
+        <field name="name">Linear Circuit Analysis</field>
+        <field name="code">EE101</field>
+        <field name="department_id" ref="dept_ee"/>
+        <field name="credit_hours">4</field>
+        <field name="description">DC and AC circuit laws, Kirchhoff's laws, nodal and mesh analysis, Thevenin equivalent theorems, and operational amplifiers.</field>
+    </record>
+
+    <record id="course_ai201" model="unisphere.course">
+        <field name="name">Artificial Intelligence &amp; Machine Learning</field>
+        <field name="code">AI201</field>
+        <field name="department_id" ref="dept_ai"/>
+        <field name="credit_hours">3</field>
+        <field name="description">Heuristic search strategies, probabilistic reasoning, supervised learning algorithms, gradient descent, and deep neural networks.</field>
+    </record>
+
+    <record id="course_ms101" model="unisphere.course">
+        <field name="name">Principles of Management</field>
+        <field name="code">MS101</field>
+        <field name="department_id" ref="dept_ms"/>
+        <field name="credit_hours">3</field>
+        <field name="description">Foundational management concepts, strategic planning, team leadership, organizational dynamics, and business decision making.</field>
+    </record>
+
+    <!-- 4. Course Section Offerings (Fall 2024 Active) -->
+    <record id="section_cs101_1a" model="unisphere.course.section">
+        <field name="course_id" ref="course_cs101"/>
+        <field name="term_id" ref="term_f24"/>
+        <field name="section_code">CS-1A</field>
+        <field name="classroom">Hall B-104</field>
+        <field name="schedule">Mon / Wed 09:00 - 10:30</field>
+        <field name="capacity">45</field>
+        <field name="state">open</field>
+    </record>
+
+    <record id="section_cs101_1b" model="unisphere.course.section">
+        <field name="course_id" ref="course_cs101"/>
+        <field name="term_id" ref="term_f24"/>
+        <field name="section_code">CS-1B</field>
+        <field name="classroom">Lab 2</field>
+        <field name="schedule">Tue / Thu 11:00 - 12:30</field>
+        <field name="capacity">40</field>
+        <field name="state">open</field>
+    </record>
+
+    <record id="section_cs201_2a" model="unisphere.course.section">
+        <field name="course_id" ref="course_cs201"/>
+        <field name="term_id" ref="term_f24"/>
+        <field name="section_code">CS-2A</field>
+        <field name="classroom">Hall A-201</field>
+        <field name="schedule">Mon / Wed 11:00 - 12:30</field>
+        <field name="capacity">40</field>
+        <field name="state">open</field>
+    </record>
+
+    <record id="section_se301_3a" model="unisphere.course.section">
+        <field name="course_id" ref="course_se301"/>
+        <field name="term_id" ref="term_f24"/>
+        <field name="section_code">SE-3A</field>
+        <field name="classroom">Lab 4</field>
+        <field name="schedule">Mon / Wed 14:00 - 15:30</field>
+        <field name="capacity">35</field>
+        <field name="state">open</field>
+    </record>
+
+    <record id="section_ee101_1b" model="unisphere.course.section">
+        <field name="course_id" ref="course_ee101"/>
+        <field name="term_id" ref="term_f24"/>
+        <field name="section_code">EE-1B</field>
+        <field name="classroom">Circuit Lab 1</field>
+        <field name="schedule">Tue / Thu 09:00 - 10:30</field>
+        <field name="capacity">35</field>
+        <field name="state">open</field>
+    </record>
+
+    <record id="section_ai201_1a" model="unisphere.course.section">
+        <field name="course_id" ref="course_ai201"/>
+        <field name="term_id" ref="term_f24"/>
+        <field name="section_code">AI-1A</field>
+        <field name="classroom">AI Research Center</field>
+        <field name="schedule">Fri 09:00 - 12:00</field>
+        <field name="capacity">40</field>
+        <field name="state">open</field>
+    </record>
+</odoo>
