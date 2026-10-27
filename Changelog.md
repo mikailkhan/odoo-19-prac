@@ -4,6 +4,38 @@ All notable changes to the UniSphere University ERP project will be documented i
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [Phase 3: Students and Faculty] - 2026-10-27
+
+### Added
+- Implemented `unisphere.student` profile model:
+  - Linked to core `res.partner` for contact identity (name, email, phone, avatar picture).
+  - Unique matriculation ID (`student_id`) with Odoo 19 `models.Constraint`.
+  - Degree programs (`bs_cs`, `bs_se`, `bs_ee`, `bs_ai`, `bba`, `ms_cs`), admission dates, current term, and enrollment lifecycle state machine (`draft`, `enrolled`, `suspended`, `graduated`, `withdrawn`).
+  - Personal demographics (gender, date of birth, blood group).
+- Implemented `unisphere.faculty` profile model:
+  - Linked to `res.partner` and internal `res.users` for ERP system access.
+  - Unique staff identifier (`faculty_id`) with `models.Constraint`.
+  - Academic ranks (Professor, Associate Professor, Assistant Professor, Lecturer, Adjunct Fellow).
+  - Qualifications, areas of specialization, and reverse linkage to assigned course sections.
+  - Smart button with live counter for active teaching sections.
+- Refactored `unisphere.course.section.instructor_id` to link directly to `unisphere.faculty`.
+- Created declarative XML views:
+  - Student and Faculty List views with badge widgets and contact fields.
+  - Student and Faculty Kanban views featuring responsive `<aside>`, `<main>`, and `<footer>` cards.
+  - Student and Faculty Form views with avatars, contact tabs, and `<chatter/>`.
+  - Search views with group-by filters (Department, Program, Academic Term, Designation).
+- Submenu navigation added under **Students & Faculty** in [menus.xml](file:///Users/mikailkhan/Documents/WebDev/Practice/odoo19-local/addons/unisphere_university/views/menus.xml).
+- Added realistic demo records matching the Stitch roster:
+  - Faculty: Dr. Eleanor Vance (HoD CS), Dr. Tariq Mahmood, Engr. Farhan Ali, Dr. Sarah Jenkins.
+  - Students: Ayesha Malik (`NUT-2024-CS-0142`), Bilal Ahmed Khan (`NUT-2024-EE-0089`), Zainab Fatima (`NUT-2024-SE-0311`), Muhammad Usman (`NUT-2024-AI-0105`).
+- Added automated unit test suite (`tests/test_students_faculty.py`) covering unique constraints, contact synchronization, and smart button section counts.
+
+### Validated
+- Passed 9/9 automated unit tests across all test suites with 0 failures and 0 errors.
+- Verified database population: 4 students and 4 faculty members with complete relational linkages.
+
+---
+
 ## [Phase 2: Academic Foundation] - 2026-10-27
 
 ### Added

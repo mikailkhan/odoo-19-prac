@@ -111,11 +111,78 @@
         <field name="description">Foundational management concepts, strategic planning, team leadership, organizational dynamics, and business decision making.</field>
     </record>
 
-    <!-- 4. Course Section Offerings (Fall 2024 Active) -->
+    <!-- 4. Faculty Contacts & Profiles -->
+    <record id="partner_fac_eleanor" model="res.partner">
+        <field name="name">Dr. Eleanor Vance</field>
+        <field name="email">e.vance@northstar.edu</field>
+        <field name="phone">+92 51 9085 2001</field>
+        <field name="is_company">False</field>
+    </record>
+    <record id="fac_eleanor" model="unisphere.faculty">
+        <field name="partner_id" ref="partner_fac_eleanor"/>
+        <field name="faculty_id">NUT-FAC-0012</field>
+        <field name="department_id" ref="dept_cs"/>
+        <field name="designation">professor</field>
+        <field name="qualification">Ph.D. in Computer Science (MIT)</field>
+        <field name="specialization">Distributed Systems &amp; Database Engines</field>
+    </record>
+
+    <record id="partner_fac_tariq" model="res.partner">
+        <field name="name">Dr. Tariq Mahmood</field>
+        <field name="email">t.mahmood@northstar.edu</field>
+        <field name="phone">+92 51 9085 2002</field>
+        <field name="is_company">False</field>
+    </record>
+    <record id="fac_tariq" model="unisphere.faculty">
+        <field name="partner_id" ref="partner_fac_tariq"/>
+        <field name="faculty_id">NUT-FAC-0034</field>
+        <field name="department_id" ref="dept_cs"/>
+        <field name="designation">assoc_prof</field>
+        <field name="qualification">Ph.D. in Software Engineering (Stanford)</field>
+        <field name="specialization">Algorithms &amp; Computational Complexity</field>
+    </record>
+
+    <record id="partner_fac_farhan" model="res.partner">
+        <field name="name">Engr. Farhan Ali</field>
+        <field name="email">f.ali@northstar.edu</field>
+        <field name="phone">+92 51 9085 2003</field>
+        <field name="is_company">False</field>
+    </record>
+    <record id="fac_farhan" model="unisphere.faculty">
+        <field name="partner_id" ref="partner_fac_farhan"/>
+        <field name="faculty_id">NUT-FAC-0056</field>
+        <field name="department_id" ref="dept_ee"/>
+        <field name="designation">asst_prof</field>
+        <field name="qualification">M.S. Electrical Engineering (Imperial)</field>
+        <field name="specialization">VLSI Design &amp; Digital Signal Processing</field>
+    </record>
+
+    <record id="partner_fac_sarah" model="res.partner">
+        <field name="name">Dr. Sarah Jenkins</field>
+        <field name="email">s.jenkins@northstar.edu</field>
+        <field name="phone">+92 51 9085 2004</field>
+        <field name="is_company">False</field>
+    </record>
+    <record id="fac_sarah" model="unisphere.faculty">
+        <field name="partner_id" ref="partner_fac_sarah"/>
+        <field name="faculty_id">NUT-FAC-0078</field>
+        <field name="department_id" ref="dept_se"/>
+        <field name="designation">assoc_prof</field>
+        <field name="qualification">Ph.D. in Computer Science (Cambridge)</field>
+        <field name="specialization">Enterprise Microservice Architectures</field>
+    </record>
+
+    <!-- Update HoD on CS department -->
+    <record id="dept_cs" model="unisphere.department">
+        <field name="head_of_department_id" ref="partner_fac_eleanor"/>
+    </record>
+
+    <!-- 5. Course Section Offerings (Fall 2024 with Assigned Faculty) -->
     <record id="section_cs101_1a" model="unisphere.course.section">
         <field name="course_id" ref="course_cs101"/>
         <field name="term_id" ref="term_f24"/>
         <field name="section_code">CS-1A</field>
+        <field name="instructor_id" ref="fac_eleanor"/>
         <field name="classroom">Hall B-104</field>
         <field name="schedule">Mon / Wed 09:00 - 10:30</field>
         <field name="capacity">45</field>
@@ -126,6 +193,7 @@
         <field name="course_id" ref="course_cs101"/>
         <field name="term_id" ref="term_f24"/>
         <field name="section_code">CS-1B</field>
+        <field name="instructor_id" ref="fac_tariq"/>
         <field name="classroom">Lab 2</field>
         <field name="schedule">Tue / Thu 11:00 - 12:30</field>
         <field name="capacity">40</field>
@@ -136,6 +204,7 @@
         <field name="course_id" ref="course_cs201"/>
         <field name="term_id" ref="term_f24"/>
         <field name="section_code">CS-2A</field>
+        <field name="instructor_id" ref="fac_tariq"/>
         <field name="classroom">Hall A-201</field>
         <field name="schedule">Mon / Wed 11:00 - 12:30</field>
         <field name="capacity">40</field>
@@ -146,6 +215,7 @@
         <field name="course_id" ref="course_se301"/>
         <field name="term_id" ref="term_f24"/>
         <field name="section_code">SE-3A</field>
+        <field name="instructor_id" ref="fac_sarah"/>
         <field name="classroom">Lab 4</field>
         <field name="schedule">Mon / Wed 14:00 - 15:30</field>
         <field name="capacity">35</field>
@@ -156,6 +226,7 @@
         <field name="course_id" ref="course_ee101"/>
         <field name="term_id" ref="term_f24"/>
         <field name="section_code">EE-1B</field>
+        <field name="instructor_id" ref="fac_farhan"/>
         <field name="classroom">Circuit Lab 1</field>
         <field name="schedule">Tue / Thu 09:00 - 10:30</field>
         <field name="capacity">35</field>
@@ -166,9 +237,83 @@
         <field name="course_id" ref="course_ai201"/>
         <field name="term_id" ref="term_f24"/>
         <field name="section_code">AI-1A</field>
+        <field name="instructor_id" ref="fac_eleanor"/>
         <field name="classroom">AI Research Center</field>
         <field name="schedule">Fri 09:00 - 12:00</field>
         <field name="capacity">40</field>
         <field name="state">open</field>
+    </record>
+
+    <!-- 6. Student Contacts & Profiles (Matching Stitch Roster) -->
+    <record id="partner_student_ayesha" model="res.partner">
+        <field name="name">Ayesha Malik</field>
+        <field name="email">ayesha.malik@student.northstar.edu</field>
+        <field name="phone">+92 300 5550142</field>
+        <field name="is_company">False</field>
+    </record>
+    <record id="student_ayesha" model="unisphere.student">
+        <field name="partner_id" ref="partner_student_ayesha"/>
+        <field name="student_id">NUT-2024-CS-0142</field>
+        <field name="department_id" ref="dept_cs"/>
+        <field name="program">bs_cs</field>
+        <field name="admission_date">2024-09-01</field>
+        <field name="current_term_id" ref="term_f24"/>
+        <field name="gender">female</field>
+        <field name="blood_group">b_pos</field>
+        <field name="state">enrolled</field>
+    </record>
+
+    <record id="partner_student_bilal" model="res.partner">
+        <field name="name">Bilal Ahmed Khan</field>
+        <field name="email">bilal.khan@student.northstar.edu</field>
+        <field name="phone">+92 321 5550089</field>
+        <field name="is_company">False</field>
+    </record>
+    <record id="student_bilal" model="unisphere.student">
+        <field name="partner_id" ref="partner_student_bilal"/>
+        <field name="student_id">NUT-2024-EE-0089</field>
+        <field name="department_id" ref="dept_ee"/>
+        <field name="program">bs_ee</field>
+        <field name="admission_date">2024-09-01</field>
+        <field name="current_term_id" ref="term_f24"/>
+        <field name="gender">male</field>
+        <field name="blood_group">o_pos</field>
+        <field name="state">enrolled</field>
+    </record>
+
+    <record id="partner_student_zainab" model="res.partner">
+        <field name="name">Zainab Fatima</field>
+        <field name="email">zainab.fatima@student.northstar.edu</field>
+        <field name="phone">+92 333 5550311</field>
+        <field name="is_company">False</field>
+    </record>
+    <record id="student_zainab" model="unisphere.student">
+        <field name="partner_id" ref="partner_student_zainab"/>
+        <field name="student_id">NUT-2024-SE-0311</field>
+        <field name="department_id" ref="dept_se"/>
+        <field name="program">bs_se</field>
+        <field name="admission_date">2024-09-01</field>
+        <field name="current_term_id" ref="term_f24"/>
+        <field name="gender">female</field>
+        <field name="blood_group">a_pos</field>
+        <field name="state">enrolled</field>
+    </record>
+
+    <record id="partner_student_usman" model="res.partner">
+        <field name="name">Muhammad Usman</field>
+        <field name="email">m.usman@student.northstar.edu</field>
+        <field name="phone">+92 345 5550105</field>
+        <field name="is_company">False</field>
+    </record>
+    <record id="student_usman" model="unisphere.student">
+        <field name="partner_id" ref="partner_student_usman"/>
+        <field name="student_id">NUT-2024-AI-0105</field>
+        <field name="department_id" ref="dept_ai"/>
+        <field name="program">bs_ai</field>
+        <field name="admission_date">2024-09-01</field>
+        <field name="current_term_id" ref="term_f24"/>
+        <field name="gender">male</field>
+        <field name="blood_group">ab_pos</field>
+        <field name="state">enrolled</field>
     </record>
 </odoo>

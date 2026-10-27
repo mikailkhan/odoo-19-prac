@@ -44,11 +44,24 @@
               action="action_unisphere_department"
               sequence="40"/>
 
-    <!-- 3. People (Students & Faculty) Category (Phase 3) -->
+    <!-- 3. People (Students & Faculty) Category -->
     <menuitem id="menu_unisphere_people"
               name="Students &amp; Faculty"
               parent="menu_unisphere_root"
               sequence="30"/>
+
+    <!-- People Sub-items -->
+    <menuitem id="menu_unisphere_students"
+              name="Students"
+              parent="menu_unisphere_people"
+              action="action_unisphere_student"
+              sequence="10"/>
+
+    <menuitem id="menu_unisphere_faculty"
+              name="Faculty"
+              parent="menu_unisphere_people"
+              action="action_unisphere_faculty"
+              sequence="20"/>
 
     <!-- 4. Class Operations (Enrollments & Attendance) Category (Phases 4 & 5) -->
     <menuitem id="menu_unisphere_operations"

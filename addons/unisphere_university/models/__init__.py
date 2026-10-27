@@ -2,4 +2,6 @@
 from . import department
 from . import academic_term
 from . import course
+from . import faculty
 from . import course_section
+from . import student

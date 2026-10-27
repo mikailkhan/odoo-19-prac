@@ -43,7 +43,7 @@ class UnisphereCourseSection(models.Model):
         readonly=True
     )
     instructor_id = fields.Many2one(
-        'res.partner',
+        'unisphere.faculty',
         string='Primary Instructor / Faculty',
         tracking=True,
         help='Assigned faculty member for lectures and grading.'

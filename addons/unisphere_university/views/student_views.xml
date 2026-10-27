@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Student List View -->
+    <record id="view_unisphere_student_list" model="ir.ui.view">
+        <field name="name">unisphere.student.list</field>
+        <field name="model">unisphere.student</field>
+        <field name="arch" type="xml">
+            <list string="Students Directory" sample="1">
+                <field name="student_id"/>
+                <field name="name"/>
+                <field name="department_id"/>
+                <field name="program"/>
+                <field name="current_term_id"/>
+                <field name="email"/>
+                <field name="phone"/>
+                <field name="admission_date"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'enrolled'"
+                       decoration-info="state == 'draft'"
+                       decoration-danger="state == 'suspended'"
+                       decoration-muted="state in ('graduated', 'withdrawn')"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Student Kanban View -->
+    <record id="view_unisphere_student_kanban" model="ir.ui.view">
+        <field name="name">unisphere.student.kanban</field>
+        <field name="model">unisphere.student</field>
+        <field name="arch" type="xml">
+            <kanban sample="1" class="o_kanban_mobile">
+                <field name="id"/>
+                <field name="name"/>
+                <field name="student_id"/>
+                <field name="department_id"/>
+                <field name="program"/>
+                <field name="state"/>
+                <field name="avatar_128"/>
+                <templates>
+                    <t t-name="card" class="flex-row align-items-center p-2">
+                        <aside class="me-3">
+                            <field name="avatar_128" widget="image" class="rounded-circle" options="{'size': [52, 52]}"/>
+                        </aside>
+                        <main class="flex-grow-1">
+                            <div class="d-flex justify-content-between align-items-baseline">
+                                <span class="fw-bold fs-6 text-primary"><field name="name"/></span>
+                                <span class="badge text-bg-light border font-monospace"><field name="student_id"/></span>
+                            </div>
+                            <div class="text-muted small">
+                                <field name="program"/> • <field name="department_id"/>
+                            </div>
+                            <footer class="mt-2 pt-1 border-top d-flex justify-content-between align-items-center">
+                                <field name="state" widget="badge"
+                                       decoration-success="state == 'enrolled'"
+                                       decoration-info="state == 'draft'"
+                                       decoration-danger="state == 'suspended'"/>
+                                <span class="small text-muted"><field name="admission_date"/></span>
+                            </footer>
+                        </main>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Student Form View -->
+    <record id="view_unisphere_student_form" model="ir.ui.view">
+        <field name="name">unisphere.student.form</field>
+        <field name="model">unisphere.student</field>
+        <field name="arch" type="xml">
+            <form string="Student Dossier">
+                <header>
+                    <button name="action_set_enrolled" string="Confirm Enrollment" type="object"
+                            class="oe_highlight" invisible="state == 'enrolled'"/>
+                    <button name="action_set_suspended" string="Suspend Student" type="object"
+                            invisible="state in ('suspended', 'graduated', 'withdrawn')"/>
+                    <button name="action_set_graduated" string="Mark Graduated" type="object"
+                            invisible="state != 'enrolled'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,enrolled,graduated"/>
+                </header>
+                <sheet>
+                    <field name="image_1920" widget="image" class="oe_avatar" options="{'preview_image': 'avatar_128'}"/>
+                    <div class="oe_title">
+                        <label for="student_id" class="oe_edit_only" string="Registration / Student ID"/>
+                        <h1>
+                            <field name="student_id" placeholder="e.g. NUT-2024-CS-0142" class="oe_inline"/>
+                        </h1>
+                        <label for="partner_id" class="oe_edit_only" string="Student Legal Name"/>
+                        <h2>
+                            <field name="partner_id" placeholder="Select or create contact..." context="{'show_address': 1}" options="{'no_quick_create': True}"/>
+                        </h2>
+                    </div>
+                    <group>
+                        <group string="Academic Information">
+                            <field name="department_id"/>
+                            <field name="program"/>
+                            <field name="current_term_id"/>
+                            <field name="admission_date"/>
+                        </group>
+                        <group string="System &amp; Portal Credentials">
+                            <field name="user_id" options="{'no_create': True}"/>
+                            <field name="active" widget="boolean_toggle"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Contact &amp; Demographics" name="contact_demographics">
+                            <group>
+                                <group string="Communication Details">
+                                    <field name="email" widget="email"/>
+                                    <field name="phone" widget="phone"/>
+                                </group>
+                                <group string="Personal Records">
+                                    <field name="date_of_birth"/>
+                                    <field name="gender"/>
+                                    <field name="blood_group"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Student Search View -->
+    <record id="view_unisphere_student_search" model="ir.ui.view">
+        <field name="name">unisphere.student.search</field>
+        <field name="model">unisphere.student</field>
+        <field name="arch" type="xml">
+            <search string="Search Students">
+                <field name="name" filter_domain="['|', '|', ('name', 'ilike', self), ('student_id', 'ilike', self), ('email', 'ilike', self)]"/>
+                <field name="student_id"/>
+                <field name="department_id"/>
+                <field name="program"/>
+                <field name="current_term_id"/>
+                <separator/>
+                <filter string="Enrolled Students" name="filter_enrolled" domain="[('state', '=', 'enrolled')]"/>
+                <filter string="Pending Admission" name="filter_draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Graduated" name="filter_graduated" domain="[('state', '=', 'graduated')]"/>
+                <filter string="Suspended" name="filter_suspended" domain="[('state', '=', 'suspended')]"/>
+                <group>
+                    <filter string="Department" name="group_by_department" context="{'group_by': 'department_id'}"/>
+                    <filter string="Program" name="group_by_program" context="{'group_by': 'program'}"/>
+                    <filter string="Academic Term" name="group_by_term" context="{'group_by': 'current_term_id'}"/>
+                    <filter string="Status" name="group_by_state" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Window Action -->
+    <record id="action_unisphere_student" model="ir.actions.act_window">
+        <field name="name">Students</field>
+        <field name="res_model">unisphere.student</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="search_view_id" ref="view_unisphere_student_search"/>
+        <field name="context">{'search_default_filter_enrolled': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Register a new student!
+            </p>
+            <p>
+                Manage matriculation numbers, degree programs, contact information, and enrollments across academic terms.
+            </p>
+        </field>
+    </record>
+</odoo>

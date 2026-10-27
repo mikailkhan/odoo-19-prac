@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Faculty List View -->
+    <record id="view_unisphere_faculty_list" model="ir.ui.view">
+        <field name="name">unisphere.faculty.list</field>
+        <field name="model">unisphere.faculty</field>
+        <field name="arch" type="xml">
+            <list string="Faculty Directory" sample="1">
+                <field name="faculty_id"/>
+                <field name="name"/>
+                <field name="department_id"/>
+                <field name="designation"/>
+                <field name="email"/>
+                <field name="phone"/>
+                <field name="section_count" string="Teaching Sections"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Faculty Kanban View -->
+    <record id="view_unisphere_faculty_kanban" model="ir.ui.view">
+        <field name="name">unisphere.faculty.kanban</field>
+        <field name="model">unisphere.faculty</field>
+        <field name="arch" type="xml">
+            <kanban sample="1" class="o_kanban_mobile">
+                <field name="id"/>
+                <field name="name"/>
+                <field name="faculty_id"/>
+                <field name="department_id"/>
+                <field name="designation"/>
+                <field name="avatar_128"/>
+                <field name="section_count"/>
+                <templates>
+                    <t t-name="card" class="flex-row align-items-center p-2">
+                        <aside class="me-3">
+                            <field name="avatar_128" widget="image" class="rounded-circle" options="{'size': [52, 52]}"/>
+                        </aside>
+                        <main class="flex-grow-1">
+                            <div class="d-flex justify-content-between align-items-baseline">
+                                <span class="fw-bold fs-6 text-primary"><field name="name"/></span>
+                                <span class="badge text-bg-light border font-monospace"><field name="faculty_id"/></span>
+                            </div>
+                            <div class="text-muted small">
+                                <field name="designation"/> • <field name="department_id"/>
+                            </div>
+                            <footer class="mt-2 pt-1 border-top d-flex justify-content-between align-items-center">
+                                <span class="badge text-bg-primary"><field name="section_count"/> Active Sections</span>
+                                <span class="small text-muted"><field name="email"/></span>
+                            </footer>
+                        </main>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Faculty Form View -->
+    <record id="view_unisphere_faculty_form" model="ir.ui.view">
+        <field name="name">unisphere.faculty.form</field>
+        <field name="model">unisphere.faculty</field>
+        <field name="arch" type="xml">
+            <form string="Faculty Member Profile">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_sections"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-mortar-board">
+                            <field name="section_count" widget="statinfo" string="Sections"/>
+                        </button>
+                    </div>
+                    <field name="image_1920" widget="image" class="oe_avatar" options="{'preview_image': 'avatar_128'}"/>
+                    <div class="oe_title">
+                        <label for="faculty_id" class="oe_edit_only" string="Faculty Staff ID"/>
+                        <h1>
+                            <field name="faculty_id" placeholder="e.g. NUT-FAC-0089" class="oe_inline"/>
+                        </h1>
+                        <label for="partner_id" class="oe_edit_only" string="Faculty Full Name"/>
+                        <h2>
+                            <field name="partner_id" placeholder="Select or create contact..." context="{'show_address': 1}" options="{'no_quick_create': True}"/>
+                        </h2>
+                    </div>
+                    <group>
+                        <group string="Academic Rank &amp; Office">
+                            <field name="department_id"/>
+                            <field name="designation"/>
+                            <field name="qualification" placeholder="e.g. Ph.D. in Computer Science"/>
+                            <field name="specialization" placeholder="e.g. Artificial Intelligence, Cryptography"/>
+                        </group>
+                        <group string="Institutional Credentials">
+                            <field name="user_id" options="{'no_create': True}"/>
+                            <field name="email" widget="email"/>
+                            <field name="phone" widget="phone"/>
+                            <field name="active" widget="boolean_toggle"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Teaching Responsibilities" name="teaching_sections">
+                            <field name="section_ids" readonly="1">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="course_id"/>
+                                    <field name="term_id"/>
+                                    <field name="classroom"/>
+                                    <field name="schedule"/>
+                                    <field name="capacity"/>
+                                    <field name="seats_available"/>
+                                    <field name="state" widget="badge"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Faculty Search View -->
+    <record id="view_unisphere_faculty_search" model="ir.ui.view">
+        <field name="name">unisphere.faculty.search</field>
+        <field name="model">unisphere.faculty</field>
+        <field name="arch" type="xml">
+            <search string="Search Faculty Members">
+                <field name="name" filter_domain="['|', '|', ('name', 'ilike', self), ('faculty_id', 'ilike', self), ('email', 'ilike', self)]"/>
+                <field name="faculty_id"/>
+                <field name="department_id"/>
+                <field name="designation"/>
+                <separator/>
+                <filter string="Professors" name="filter_professors" domain="[('designation', 'in', ('professor', 'assoc_prof'))]"/>
+                <filter string="Lecturers &amp; Adjuncts" name="filter_lecturers" domain="[('designation', 'in', ('lecturer', 'adjunct'))]"/>
+                <group>
+                    <filter string="Department" name="group_by_department" context="{'group_by': 'department_id'}"/>
+                    <filter string="Designation" name="group_by_designation" context="{'group_by': 'designation'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Window Action -->
+    <record id="action_unisphere_faculty" model="ir.actions.act_window">
+        <field name="name">Faculty Directory</field>
+        <field name="res_model">unisphere.faculty</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="search_view_id" ref="view_unisphere_faculty_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Register a faculty member!
+            </p>
+            <p>
+                Manage professors, lecturers, academic ranks, department affiliations, and course teaching assignments.
+            </p>
+        </field>
+    </record>
+</odoo>

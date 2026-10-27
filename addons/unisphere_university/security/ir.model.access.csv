@@ -13,7 +13,17 @@ access_unisphere_course_faculty,unisphere.course.faculty,model_unisphere_course,
 access_unisphere_course_user,unisphere.course.user,model_unisphere_course,base.group_user,1,0,0,0
 access_unisphere_course_student,unisphere.course.student,model_unisphere_course,group_unisphere_student,1,0,0,0
 
+access_unisphere_faculty_admin,unisphere.faculty.admin,model_unisphere_faculty,group_unisphere_admin,1,1,1,1
+access_unisphere_faculty_faculty,unisphere.faculty.faculty,model_unisphere_faculty,group_unisphere_faculty,1,1,0,0
+access_unisphere_faculty_user,unisphere.faculty.user,model_unisphere_faculty,base.group_user,1,0,0,0
+access_unisphere_faculty_student,unisphere.faculty.student,model_unisphere_faculty,group_unisphere_student,1,0,0,0
+
 access_unisphere_course_section_admin,unisphere.course.section.admin,model_unisphere_course_section,group_unisphere_admin,1,1,1,1
 access_unisphere_course_section_faculty,unisphere.course.section.faculty,model_unisphere_course_section,group_unisphere_faculty,1,1,0,0
 access_unisphere_course_section_user,unisphere.course.section.user,model_unisphere_course_section,base.group_user,1,0,0,0
 access_unisphere_course_section_student,unisphere.course.section.student,model_unisphere_course_section,group_unisphere_student,1,0,0,0
+
+access_unisphere_student_admin,unisphere.student.admin,model_unisphere_student,group_unisphere_admin,1,1,1,1
+access_unisphere_student_faculty,unisphere.student.faculty,model_unisphere_student,group_unisphere_faculty,1,0,0,0
+access_unisphere_student_user,unisphere.student.user,model_unisphere_student,base.group_user,1,0,0,0
+access_unisphere_student_student,unisphere.student.student,model_unisphere_student,group_unisphere_student,1,0,0,0
