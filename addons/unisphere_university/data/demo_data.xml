@@ -316,4 +316,40 @@
         <field name="blood_group">ab_pos</field>
         <field name="state">enrolled</field>
     </record>
+
+    <!-- 7. Course Section Enrollments (Fall 2024 Active Cohort) -->
+    <record id="enrollment_ayesha_cs101" model="unisphere.enrollment">
+        <field name="student_id" ref="student_ayesha"/>
+        <field name="section_id" ref="section_cs101_1a"/>
+        <field name="enrollment_date">2024-09-02</field>
+        <field name="state">enrolled</field>
+    </record>
+
+    <record id="enrollment_ayesha_cs201" model="unisphere.enrollment">
+        <field name="student_id" ref="student_ayesha"/>
+        <field name="section_id" ref="section_cs201_2a"/>
+        <field name="enrollment_date">2024-09-02</field>
+        <field name="state">enrolled</field>
+    </record>
+
+    <record id="enrollment_bilal_ee101" model="unisphere.enrollment">
+        <field name="student_id" ref="student_bilal"/>
+        <field name="section_id" ref="section_ee101_1b"/>
+        <field name="enrollment_date">2024-09-03</field>
+        <field name="state">enrolled</field>
+    </record>
+
+    <record id="enrollment_zainab_se301" model="unisphere.enrollment">
+        <field name="student_id" ref="student_zainab"/>
+        <field name="section_id" ref="section_se301_3a"/>
+        <field name="enrollment_date">2024-09-03</field>
+        <field name="state">enrolled</field>
+    </record>
+
+    <record id="enrollment_usman_ai201" model="unisphere.enrollment">
+        <field name="student_id" ref="student_usman"/>
+        <field name="section_id" ref="section_ai201_1a"/>
+        <field name="enrollment_date">2024-09-04</field>
+        <field name="state">enrolled</field>
+    </record>
 </odoo>

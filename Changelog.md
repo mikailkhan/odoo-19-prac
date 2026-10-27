@@ -4,6 +4,35 @@ All notable changes to the UniSphere University ERP project will be documented i
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [Phase 4: Course Section Enrollment] - 2026-10-27
+
+### Added
+- Implemented `unisphere.enrollment` model:
+  - Links Student $\leftrightarrow$ Course Section $\leftrightarrow$ Academic Term.
+  - Relational fields for automatic course, term, and department tracking.
+  - Lifecycle state machine: `draft` (Pending Approval), `enrolled` (Confirmed), `dropped` (Withdrawn), `completed` (Term Completed).
+  - Enforced duplicate prevention via `models.Constraint('UNIQUE(student_id, section_id)', ...)`.
+  - Enforced strict capacity validation preventing enrollments when a section's limit is reached.
+- Refactored `unisphere.course.section`:
+  - Dynamically computes `enrolled_count` and `seats_available` based on active confirmed enrollments.
+  - Added "Class Roster" smart button and embedded student roster table.
+- Enhanced `unisphere.student`:
+  - Dynamically computes `enrollment_count` (active registered courses).
+  - Added "Active Courses" smart button and embedded enrolled courses table.
+- Created declarative XML views:
+  - Enrollment List view with status badges and term/section filters.
+  - Enrollment Form view with state machine action buttons and chatter.
+  - Enrollment Pivot view for term/department distribution analytics.
+- Added **Enrollment Roster** menu under **Class Operations**.
+- Pre-populated realistic demo enrollments matching the Stitch admissions table (5 active enrollments).
+- Added automated unit test suite (`tests/test_enrollment.py`) testing duplicate enrollment prevention, section capacity limits, and seat freeing on withdrawal.
+
+### Validated
+- Passed 12/12 automated unit tests across all test suites with 0 failures and 0 errors.
+- Verified database records: 5 confirmed enrollments across Fall 2024 active sections.
+
+---
+
 ## [Phase 3: Students and Faculty] - 2026-10-27
 
 ### Added

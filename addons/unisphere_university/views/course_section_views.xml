@@ -41,6 +41,14 @@
                     <field name="state" widget="statusbar" statusbar_visible="draft,open,closed,completed"/>
                 </header>
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_roster"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-users">
+                            <field name="enrolled_count" widget="statinfo" string="Roster"/>
+                        </button>
+                    </div>
                     <div class="oe_title">
                         <label for="name" class="oe_edit_only" string="Section Identifier"/>
                         <h1>
@@ -69,6 +77,20 @@
                             <field name="seats_available"/>
                         </group>
                     </group>
+                    <notebook>
+                        <page string="Student Roster" name="roster_page">
+                            <field name="enrollment_ids" readonly="1">
+                                <list>
+                                    <field name="student_id"/>
+                                    <field name="enrollment_date"/>
+                                    <field name="final_grade"/>
+                                    <field name="state" widget="badge"
+                                           decoration-success="state == 'enrolled'"
+                                           decoration-warning="state == 'dropped'"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
                 </sheet>
                 <chatter/>
             </form>

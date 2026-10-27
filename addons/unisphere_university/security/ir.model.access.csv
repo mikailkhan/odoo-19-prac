@@ -27,3 +27,8 @@ access_unisphere_student_admin,unisphere.student.admin,model_unisphere_student,g
 access_unisphere_student_faculty,unisphere.student.faculty,model_unisphere_student,group_unisphere_faculty,1,0,0,0
 access_unisphere_student_user,unisphere.student.user,model_unisphere_student,base.group_user,1,0,0,0
 access_unisphere_student_student,unisphere.student.student,model_unisphere_student,group_unisphere_student,1,0,0,0
+
+access_unisphere_enrollment_admin,unisphere.enrollment.admin,model_unisphere_enrollment,group_unisphere_admin,1,1,1,1
+access_unisphere_enrollment_faculty,unisphere.enrollment.faculty,model_unisphere_enrollment,group_unisphere_faculty,1,1,1,0
+access_unisphere_enrollment_user,unisphere.enrollment.user,model_unisphere_enrollment,base.group_user,1,0,0,0
+access_unisphere_enrollment_student,unisphere.enrollment.student,model_unisphere_enrollment,group_unisphere_student,1,0,0,0

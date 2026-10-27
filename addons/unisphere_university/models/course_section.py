@@ -63,10 +63,15 @@ class UnisphereCourseSection(models.Model):
         tracking=True,
         help='Maximum number of students permitted to enroll.'
     )
+    enrollment_ids = fields.One2many(
+        'unisphere.enrollment',
+        'section_id',
+        string='Roster Records'
+    )
     enrolled_count = fields.Integer(
         string='Enrolled Students',
-        default=0,
-        readonly=True,
+        compute='_compute_enrolled_count',
+        store=True,
         help='Current confirmed student enrollments.'
     )
     seats_available = fields.Integer(
@@ -99,10 +104,27 @@ class UnisphereCourseSection(models.Model):
             else:
                 record.name = s_code or _('New Section')
 
+    @api.depends('enrollment_ids.state')
+    def _compute_enrolled_count(self):
+        for record in self:
+            record.enrolled_count = len(record.enrollment_ids.filtered(lambda e: e.state == 'enrolled'))
+
     @api.depends('capacity', 'enrolled_count')
     def _compute_seats_available(self):
         for record in self:
             record.seats_available = max(0, record.capacity - record.enrolled_count)
+
+    def action_view_roster(self):
+        """Smart button action to view student roster for this section"""
+        self.ensure_one()
+        return {
+            'name': _('Class Roster - %s') % self.name,
+            'type': 'ir.actions.act_window',
+            'res_model': 'unisphere.enrollment',
+            'view_mode': 'list,form',
+            'domain': [('section_id', '=', self.id)],
+            'context': {'default_section_id': self.id},
+        }
 
     @api.constrains('capacity')
     def _check_capacity(self):

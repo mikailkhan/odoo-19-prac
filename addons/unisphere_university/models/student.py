@@ -118,6 +118,16 @@ class UnisphereStudent(models.Model):
         string='Active',
         default=True
     )
+    enrollment_ids = fields.One2many(
+        'unisphere.enrollment',
+        'student_id',
+        string='Course Enrollments'
+    )
+    enrollment_count = fields.Integer(
+        string='Active Courses',
+        compute='_compute_enrollment_count',
+        store=True
+    )
 
     _student_id_unique = models.Constraint(
         'UNIQUE(student_id)',
@@ -151,3 +161,20 @@ class UnisphereStudent(models.Model):
     def action_set_graduated(self):
         self.ensure_one()
         self.state = 'graduated'
+
+    @api.depends('enrollment_ids.state')
+    def _compute_enrollment_count(self):
+        for record in self:
+            record.enrollment_count = len(record.enrollment_ids.filtered(lambda e: e.state == 'enrolled'))
+
+    def action_view_enrollments(self):
+        """Smart button action to view all course enrollments for this student"""
+        self.ensure_one()
+        return {
+            'name': _('Course Enrollments - %s') % self.name,
+            'type': 'ir.actions.act_window',
+            'res_model': 'unisphere.enrollment',
+            'view_mode': 'list,form',
+            'domain': [('student_id', '=', self.id)],
+            'context': {'default_student_id': self.id},
+        }

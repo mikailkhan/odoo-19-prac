@@ -63,11 +63,17 @@
               action="action_unisphere_faculty"
               sequence="20"/>
 
-    <!-- 4. Class Operations (Enrollments & Attendance) Category (Phases 4 & 5) -->
+    <!-- 4. Class Operations (Enrollments & Attendance) Category -->
     <menuitem id="menu_unisphere_operations"
               name="Class Operations"
               parent="menu_unisphere_root"
               sequence="40"/>
+
+    <menuitem id="menu_unisphere_enrollments"
+              name="Enrollment Roster"
+              parent="menu_unisphere_operations"
+              action="action_unisphere_enrollment"
+              sequence="10"/>
 
     <!-- 5. Assessments & Gradebook Category (Phase 6) -->
     <menuitem id="menu_unisphere_grading"

@@ -5,3 +5,4 @@ from . import course
 from . import faculty
 from . import course_section
 from . import student
+from . import enrollment
