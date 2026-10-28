@@ -79,6 +79,29 @@ class UnisphereCourseSection(models.Model):
         compute='_compute_seats_available',
         store=True
     )
+    attendance_ids = fields.One2many(
+        'unisphere.attendance',
+        'section_id',
+        string='Attendance Records'
+    )
+    attendance_count = fields.Integer(
+        string='Attendance Entries',
+        compute='_compute_attendance_metrics',
+        store=True
+    )
+    total_sessions_held = fields.Integer(
+        string='Sessions Held',
+        compute='_compute_attendance_metrics',
+        store=True,
+        help='Count of unique lecture dates recorded.'
+    )
+    average_attendance_rate = fields.Float(
+        string='Average Attendance (%)',
+        compute='_compute_attendance_metrics',
+        store=True,
+        digits=(5, 2),
+        help='Overall attendance percentage across all enrolled students and sessions.'
+    )
     state = fields.Selection([
         ('draft', 'Draft Setup'),
         ('open', 'Open for Registration'),
@@ -114,6 +137,16 @@ class UnisphereCourseSection(models.Model):
         for record in self:
             record.seats_available = max(0, record.capacity - record.enrolled_count)
 
+    @api.depends('attendance_ids.state', 'attendance_ids.class_date')
+    def _compute_attendance_metrics(self):
+        for record in self:
+            total_entries = len(record.attendance_ids)
+            record.attendance_count = total_entries
+            dates = {a.class_date for a in record.attendance_ids if a.class_date}
+            record.total_sessions_held = len(dates)
+            attended = len(record.attendance_ids.filtered(lambda a: a.state in ('present', 'late')))
+            record.average_attendance_rate = round((attended / total_entries * 100.0), 2) if total_entries > 0 else 100.0
+
     def action_view_roster(self):
         """Smart button action to view student roster for this section"""
         self.ensure_one()
@@ -124,6 +157,32 @@ class UnisphereCourseSection(models.Model):
             'view_mode': 'list,form',
             'domain': [('section_id', '=', self.id)],
             'context': {'default_section_id': self.id},
+        }
+
+    def action_view_attendance(self):
+        """Smart button action to view all attendance records for this section"""
+        self.ensure_one()
+        return {
+            'name': _('Attendance Log - %s') % self.name,
+            'type': 'ir.actions.act_window',
+            'res_model': 'unisphere.attendance',
+            'view_mode': 'list,form',
+            'domain': [('section_id', '=', self.id)],
+            'context': {'default_section_id': self.id},
+        }
+
+    def action_take_attendance(self):
+        """Header button to open quick attendance recording wizard for this section"""
+        self.ensure_one()
+        return {
+            'name': _('Record Attendance - %s') % self.name,
+            'type': 'ir.actions.act_window',
+            'res_model': 'unisphere.attendance.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_section_id': self.id,
+            },
         }
 
     @api.constrains('capacity')

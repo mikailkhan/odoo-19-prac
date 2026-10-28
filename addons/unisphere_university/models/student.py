@@ -128,6 +128,23 @@ class UnisphereStudent(models.Model):
         compute='_compute_enrollment_count',
         store=True
     )
+    attendance_ids = fields.One2many(
+        'unisphere.attendance',
+        'student_id',
+        string='Attendance Records'
+    )
+    attendance_count = fields.Integer(
+        string='Attendance Entries',
+        compute='_compute_attendance_metrics',
+        store=True
+    )
+    attendance_rate = fields.Float(
+        string='Overall Attendance (%)',
+        compute='_compute_attendance_metrics',
+        store=True,
+        digits=(5, 2),
+        help='Cumulative attendance percentage across all enrolled courses.'
+    )
 
     _student_id_unique = models.Constraint(
         'UNIQUE(student_id)',
@@ -174,6 +191,26 @@ class UnisphereStudent(models.Model):
             'name': _('Course Enrollments - %s') % self.name,
             'type': 'ir.actions.act_window',
             'res_model': 'unisphere.enrollment',
+            'view_mode': 'list,form',
+            'domain': [('student_id', '=', self.id)],
+            'context': {'default_student_id': self.id},
+        }
+
+    @api.depends('attendance_ids.state')
+    def _compute_attendance_metrics(self):
+        for record in self:
+            total = len(record.attendance_ids)
+            record.attendance_count = total
+            attended = len(record.attendance_ids.filtered(lambda a: a.state in ('present', 'late')))
+            record.attendance_rate = round((attended / total * 100.0), 2) if total > 0 else 100.0
+
+    def action_view_attendance(self):
+        """Smart button action to view attendance records for this student"""
+        self.ensure_one()
+        return {
+            'name': _('Attendance Records - %s') % self.name,
+            'type': 'ir.actions.act_window',
+            'res_model': 'unisphere.attendance',
             'view_mode': 'list,form',
             'domain': [('student_id', '=', self.id)],
             'context': {'default_student_id': self.id},

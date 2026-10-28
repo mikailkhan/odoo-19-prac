@@ -4,6 +4,48 @@ All notable changes to the UniSphere University ERP project will be documented i
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [Phase 5: Attendance Tracking] - 2026-10-28
+
+### Added
+- Implemented `unisphere.attendance` session record model:
+  - Links Student $\leftrightarrow$ Course Section $\leftrightarrow$ Academic Term $\leftrightarrow$ Enrollment.
+  - Tracking fields for `class_date`, status `state` (`present`, `late`, `absent`), and observational `remarks`.
+  - Database-level unique constraint (`UNIQUE(student_id, section_id, class_date)`) preventing duplicate records on the same session date.
+  - Python `@api.constrains` preventing future dates and rejecting attendance for students not actively enrolled in the course section.
+- Implemented `unisphere.attendance.wizard` & `unisphere.attendance.wizard.line`:
+  - 1-click batch attendance entry modal allowing faculty to quickly mark attendance for the whole section roster.
+  - Automatically loads enrolled students with default `present` status.
+  - Upserts in place if a session for that date was already started.
+- Enhanced `unisphere.enrollment`:
+  - Computed attendance compliance counters: `total_sessions`, `attended_sessions`, `absent_sessions`.
+  - Stored `attendance_rate` percentage (attended / total * 100), with dynamic `< 75%` danger badges.
+  - Embedded Attendance History subtable in enrollment form view.
+- Enhanced `unisphere.course.section`:
+  - Live session metrics: `total_sessions_held`, `average_attendance_rate`, and `attendance_count`.
+  - Header button **Take Attendance** (opens modal wizard).
+  - Stat smart button **Attendance** and embedded Attendance Log tab.
+- Enhanced `unisphere.student`:
+  - Institutional cumulative `attendance_rate` progress bar and stat counter.
+  - Smart button **Attendance Records** filtering all sessions attended by the student.
+- Created declarative XML views:
+  - Attendance List view with status badges, date, and remark columns.
+  - Attendance Form view with radio selector and chatter tracking.
+  - Attendance Search view with preset filters (Present, Late, Absent, Today's Sessions) and grouping by Section/Date/Status.
+  - Quick Attendance Wizard modal form view with roster line items.
+- Registered **Attendance Register** menu under **Class Operations**.
+- Pre-populated realistic demo attendance sessions for Fall 2024 CS-101 Section 1A showing varying student attendance rates (Ayesha Malik 100%, Bilal Khan 75%, Muhammad Usman 50% triggering attendance warning).
+- Added automated unit test suite (`tests/test_attendance.py`) testing enrollment link compute, unique constraint rejection, future date prevention, unenrolled student rejection, percentage calculation, and batch wizard execution.
+
+### Validated
+- Passed 18/18 automated unit tests across all test suites with 0 failures and 0 errors.
+- Verified live database metrics:
+  - Muhammad Usman: 50.0% (4 sessions)
+  - Bilal Ahmed Khan: 75.0% (4 sessions)
+  - Ayesha Malik: 100.0% (4 sessions)
+  - CS101 Section 1A: 4 sessions held, 75.0% average attendance rate.
+
+---
+
 ## [Phase 4: Course Section Enrollment] - 2026-10-27
 
 ### Added

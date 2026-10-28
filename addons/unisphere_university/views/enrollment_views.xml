@@ -12,6 +12,7 @@
                 <field name="term_id"/>
                 <field name="department_id"/>
                 <field name="enrollment_date"/>
+                <field name="attendance_rate" widget="progressbar" string="Attendance"/>
                 <field name="final_grade"/>
                 <field name="state" widget="badge"
                        decoration-success="state == 'enrolled'"
@@ -60,6 +61,30 @@
                             <field name="active" widget="boolean_toggle"/>
                         </group>
                     </group>
+                    <group string="Attendance Compliance &amp; Metrics">
+                        <group>
+                            <field name="total_sessions"/>
+                            <field name="attended_sessions"/>
+                            <field name="absent_sessions"/>
+                        </group>
+                        <group>
+                            <field name="attendance_rate" widget="progressbar"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Attendance History" name="attendance_history">
+                            <field name="attendance_ids" readonly="1">
+                                <list>
+                                    <field name="class_date"/>
+                                    <field name="state" widget="badge"
+                                           decoration-success="state == 'present'"
+                                           decoration-warning="state == 'late'"
+                                           decoration-danger="state == 'absent'"/>
+                                    <field name="remarks"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
                 </sheet>
                 <chatter/>
             </form>

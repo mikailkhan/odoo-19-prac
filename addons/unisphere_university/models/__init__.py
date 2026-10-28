@@ -6,3 +6,5 @@ from . import faculty
 from . import course_section
 from . import student
 from . import enrollment
+from . import attendance
+from . import attendance_wizard

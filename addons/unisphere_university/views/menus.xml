@@ -75,6 +75,12 @@
               action="action_unisphere_enrollment"
               sequence="10"/>
 
+    <menuitem id="menu_unisphere_attendance"
+              name="Attendance Register"
+              parent="menu_unisphere_operations"
+              action="action_unisphere_attendance"
+              sequence="20"/>
+
     <!-- 5. Assessments & Gradebook Category (Phase 6) -->
     <menuitem id="menu_unisphere_grading"
               name="Grades &amp; Exams"
