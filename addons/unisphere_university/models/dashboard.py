@@ -88,6 +88,7 @@ class UnisphereDashboard(models.AbstractModel):
                 'department': s.department_id.name if s.department_id else 'General',
                 'program': dict(s._fields['program'].selection).get(s.program, s.program),
                 'gpa': f"{s.gpa:.2f}",
+                'is_high_gpa': bool(s.gpa >= 3.50),
                 'attendance_rate': f"{s.attendance_rate:.1f}%",
                 'is_low_attendance': is_low_att,
                 'fee_status': s.fee_status,
