@@ -55,10 +55,35 @@ class UnisphereEnrollment(models.Model):
         ('completed', 'Completed Term')
     ], string='Enrollment Status', default='enrolled', required=True, tracking=True)
 
+    grade_ids = fields.One2many(
+        'unisphere.grade',
+        'enrollment_id',
+        string='Grades'
+    )
     final_grade = fields.Float(
         string='Final Grade Marks',
-        default=0.0,
-        help='Calculated composite grade marks from continuous assessment.'
+        compute='_compute_final_grade_metrics',
+        store=True,
+        digits=(5, 2),
+        help='Calculated composite grade marks from continuous assessment weightages.'
+    )
+    letter_grade = fields.Char(
+        string='Letter Grade',
+        compute='_compute_final_grade_metrics',
+        store=True,
+        help='Letter grade according to official university scale (A, B+, etc.)'
+    )
+    grade_point = fields.Float(
+        string='Grade Point (4.0)',
+        compute='_compute_final_grade_metrics',
+        store=True,
+        digits=(3, 2),
+        help='Grade point contribution for GPA calculations.'
+    )
+    is_passed = fields.Boolean(
+        string='Course Passed',
+        compute='_compute_final_grade_metrics',
+        store=True
     )
     display_name = fields.Char(
         string='Display Name',
@@ -123,6 +148,36 @@ class UnisphereEnrollment(models.Model):
             record.attended_sessions = attended
             record.absent_sessions = absent
             record.attendance_rate = round((attended / total * 100.0), 2) if total > 0 else 100.0
+
+    @api.depends('grade_ids.marks_obtained', 'grade_ids.max_marks', 'grade_ids.assessment_id.weightage', 'grade_ids.state')
+    def _compute_final_grade_metrics(self):
+        from .grade import get_letter_grade_and_point
+        for record in self:
+            valid_grades = record.grade_ids.filtered(lambda g: g.state in ('graded', 'published'))
+            if not valid_grades:
+                record.final_grade = 0.0
+                record.letter_grade = 'N/A'
+                record.grade_point = 0.00
+                record.is_passed = False
+                continue
+
+            total_weighted_score = 0.0
+            evaluated_weightage = 0.0
+            for g in valid_grades:
+                if g.max_marks > 0 and g.assessment_id:
+                    total_weighted_score += (g.marks_obtained / g.max_marks) * g.assessment_id.weightage
+                    evaluated_weightage += g.assessment_id.weightage
+
+            if evaluated_weightage > 0:
+                final_pct = round((total_weighted_score / evaluated_weightage) * 100.0, 2)
+            else:
+                final_pct = 0.0
+
+            letter, gp = get_letter_grade_and_point(final_pct)
+            record.final_grade = final_pct
+            record.letter_grade = letter
+            record.grade_point = gp
+            record.is_passed = (letter != 'F' and final_pct >= 50.0)
 
     @api.constrains('section_id', 'state')
     def _check_section_capacity(self):

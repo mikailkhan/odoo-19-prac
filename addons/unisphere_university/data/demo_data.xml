@@ -451,5 +451,127 @@
         <field name="state">absent</field>
         <field name="remarks">Warning letter issued for sub-75% attendance.</field>
     </record>
+
+    <!-- 9. Course Assessment Components (CS-101 Section 1A) -->
+    <record id="assessment_cs101_a1" model="unisphere.assessment">
+        <field name="name">Assignment 1: Algorithms &amp; Flowcharts</field>
+        <field name="section_id" ref="section_cs101_1a"/>
+        <field name="assessment_type">assignment</field>
+        <field name="max_marks">50.0</field>
+        <field name="weightage">15.0</field>
+        <field name="due_date">2024-09-15</field>
+        <field name="state">published</field>
+    </record>
+
+    <record id="assessment_cs101_q1" model="unisphere.assessment">
+        <field name="name">Quiz 1: Variables &amp; Control Flow</field>
+        <field name="section_id" ref="section_cs101_1a"/>
+        <field name="assessment_type">quiz</field>
+        <field name="max_marks">20.0</field>
+        <field name="weightage">10.0</field>
+        <field name="due_date">2024-09-22</field>
+        <field name="state">published</field>
+    </record>
+
+    <record id="assessment_cs101_mid" model="unisphere.assessment">
+        <field name="name">Midterm Examination</field>
+        <field name="section_id" ref="section_cs101_1a"/>
+        <field name="assessment_type">midterm</field>
+        <field name="max_marks">100.0</field>
+        <field name="weightage">30.0</field>
+        <field name="due_date">2024-10-15</field>
+        <field name="state">published</field>
+    </record>
+
+    <record id="assessment_cs101_proj" model="unisphere.assessment">
+        <field name="name">Term Programming Project</field>
+        <field name="section_id" ref="section_cs101_1a"/>
+        <field name="assessment_type">project</field>
+        <field name="max_marks">100.0</field>
+        <field name="weightage">20.0</field>
+        <field name="due_date">2024-11-20</field>
+        <field name="state">grading</field>
+    </record>
+
+    <record id="assessment_cs101_final" model="unisphere.assessment">
+        <field name="name">Final Comprehensive Examination</field>
+        <field name="section_id" ref="section_cs101_1a"/>
+        <field name="assessment_type">final</field>
+        <field name="max_marks">100.0</field>
+        <field name="weightage">25.0</field>
+        <field name="due_date">2024-12-10</field>
+        <field name="state">announced</field>
+    </record>
+
+    <!-- 10. Student Assessment Grades -->
+    <!-- Assignment 1 Grades -->
+    <record id="grade_cs101_a1_ayesha" model="unisphere.grade">
+        <field name="assessment_id" ref="assessment_cs101_a1"/>
+        <field name="student_id" ref="student_ayesha"/>
+        <field name="marks_obtained">48.0</field>
+        <field name="remarks">Flawless algorithm logic and pseudocode documentation.</field>
+        <field name="state">published</field>
+    </record>
+    <record id="grade_cs101_a1_bilal" model="unisphere.grade">
+        <field name="assessment_id" ref="assessment_cs101_a1"/>
+        <field name="student_id" ref="student_bilal"/>
+        <field name="marks_obtained">40.0</field>
+        <field name="remarks">Good solution structure; minor edge cases missed.</field>
+        <field name="state">published</field>
+    </record>
+    <record id="grade_cs101_a1_usman" model="unisphere.grade">
+        <field name="assessment_id" ref="assessment_cs101_a1"/>
+        <field name="student_id" ref="student_usman"/>
+        <field name="marks_obtained">26.0</field>
+        <field name="remarks">Incomplete submission; missing loop complexity analysis.</field>
+        <field name="state">published</field>
+    </record>
+
+    <!-- Quiz 1 Grades -->
+    <record id="grade_cs101_q1_ayesha" model="unisphere.grade">
+        <field name="assessment_id" ref="assessment_cs101_q1"/>
+        <field name="student_id" ref="student_ayesha"/>
+        <field name="marks_obtained">19.0</field>
+        <field name="remarks">Excellent speed and precision.</field>
+        <field name="state">published</field>
+    </record>
+    <record id="grade_cs101_q1_bilal" model="unisphere.grade">
+        <field name="assessment_id" ref="assessment_cs101_q1"/>
+        <field name="student_id" ref="student_bilal"/>
+        <field name="marks_obtained">15.0</field>
+        <field name="remarks">Satisfactory performance.</field>
+        <field name="state">published</field>
+    </record>
+    <record id="grade_cs101_q1_usman" model="unisphere.grade">
+        <field name="assessment_id" ref="assessment_cs101_q1"/>
+        <field name="student_id" ref="student_usman"/>
+        <field name="marks_obtained">10.0</field>
+        <field name="remarks">Review branch condition syntax.</field>
+        <field name="state">published</field>
+    </record>
+
+    <!-- Midterm Examination Grades -->
+    <record id="grade_cs101_mid_ayesha" model="unisphere.grade">
+        <field name="assessment_id" ref="assessment_cs101_mid"/>
+        <field name="student_id" ref="student_ayesha"/>
+        <field name="marks_obtained">92.0</field>
+        <field name="remarks">Outstanding conceptual grasp and clean implementation.</field>
+        <field name="state">published</field>
+    </record>
+    <record id="grade_cs101_mid_bilal" model="unisphere.grade">
+        <field name="assessment_id" ref="assessment_cs101_mid"/>
+        <field name="student_id" ref="student_bilal"/>
+        <field name="marks_obtained">78.0</field>
+        <field name="remarks">Solid theoretical answers; minor coding bugs.</field>
+        <field name="state">published</field>
+    </record>
+    <record id="grade_cs101_mid_usman" model="unisphere.grade">
+        <field name="assessment_id" ref="assessment_cs101_mid"/>
+        <field name="student_id" ref="student_usman"/>
+        <field name="marks_obtained">45.0</field>
+        <field name="remarks">Below passing threshold (50%). Academic advising recommended.</field>
+        <field name="state">published</field>
+    </record>
 </odoo>
+
 

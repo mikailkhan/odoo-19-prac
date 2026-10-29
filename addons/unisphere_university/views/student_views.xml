@@ -14,6 +14,11 @@
                 <field name="email"/>
                 <field name="phone"/>
                 <field name="attendance_rate" widget="progressbar" string="Attendance"/>
+                <field name="gpa" widget="badge" string="CGPA"
+                       decoration-success="gpa >= 3.5"
+                       decoration-info="gpa >= 3.0 and gpa &lt; 3.5"
+                       decoration-warning="gpa >= 2.0 and gpa &lt; 3.0"
+                       decoration-danger="gpa &lt; 2.0"/>
                 <field name="admission_date"/>
                 <field name="state" widget="badge"
                        decoration-success="state == 'enrolled'"
@@ -93,6 +98,15 @@
                                 icon="fa-calendar-check-o">
                             <field name="attendance_count" widget="statinfo" string="Attendance"/>
                         </button>
+                        <button name="action_view_grades"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-trophy">
+                            <div class="o_stat_info">
+                                <field name="gpa" class="o_stat_value"/>
+                                <span class="o_stat_text">CGPA</span>
+                            </div>
+                        </button>
                     </div>
                     <field name="image_1920" widget="image" class="oe_avatar" options="{'preview_image': 'avatar_128'}"/>
                     <div class="oe_title">
@@ -112,6 +126,8 @@
                             <field name="current_term_id"/>
                             <field name="admission_date"/>
                             <field name="attendance_rate" widget="progressbar"/>
+                            <field name="gpa"/>
+                            <field name="earned_credits"/>
                         </group>
                         <group string="System &amp; Portal Credentials">
                             <field name="user_id" options="{'no_create': True}"/>
@@ -129,7 +145,9 @@
                                     <field name="attendance_rate" widget="badge"
                                            decoration-success="attendance_rate >= 75"
                                            decoration-danger="attendance_rate &lt; 75"/>
-                                    <field name="final_grade"/>
+                                    <field name="final_grade" string="Score (%)"/>
+                                    <field name="letter_grade" widget="badge"/>
+                                    <field name="grade_point" string="GPA"/>
                                     <field name="state" widget="badge"
                                            decoration-success="state == 'enrolled'"
                                            decoration-warning="state == 'dropped'"/>

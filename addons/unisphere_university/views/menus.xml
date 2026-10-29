@@ -87,6 +87,18 @@
               parent="menu_unisphere_root"
               sequence="50"/>
 
+    <menuitem id="menu_unisphere_assessments"
+              name="Course Assessments"
+              parent="menu_unisphere_grading"
+              action="action_unisphere_assessment"
+              sequence="10"/>
+
+    <menuitem id="menu_unisphere_gradebook"
+              name="Gradebook Matrix"
+              parent="menu_unisphere_grading"
+              action="action_unisphere_grade"
+              sequence="20"/>
+
     <!-- 6. Finance & Bursar Category (Phase 7) -->
     <menuitem id="menu_unisphere_finance"
               name="Bursar &amp; Fees"

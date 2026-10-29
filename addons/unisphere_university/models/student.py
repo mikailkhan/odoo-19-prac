@@ -145,6 +145,24 @@ class UnisphereStudent(models.Model):
         digits=(5, 2),
         help='Cumulative attendance percentage across all enrolled courses.'
     )
+    grade_ids = fields.One2many(
+        'unisphere.grade',
+        'student_id',
+        string='Assessment Grades'
+    )
+    gpa = fields.Float(
+        string='Cumulative GPA',
+        compute='_compute_academic_performance',
+        store=True,
+        digits=(3, 2),
+        help='Cumulative Grade Point Average across graded courses.'
+    )
+    earned_credits = fields.Integer(
+        string='Earned Credit Hours',
+        compute='_compute_academic_performance',
+        store=True,
+        help='Total credit hours completed with a passing grade.'
+    )
 
     _student_id_unique = models.Constraint(
         'UNIQUE(student_id)',
@@ -211,6 +229,34 @@ class UnisphereStudent(models.Model):
             'name': _('Attendance Records - %s') % self.name,
             'type': 'ir.actions.act_window',
             'res_model': 'unisphere.attendance',
+            'view_mode': 'list,form',
+            'domain': [('student_id', '=', self.id)],
+            'context': {'default_student_id': self.id},
+        }
+
+    @api.depends('enrollment_ids.grade_point', 'enrollment_ids.is_passed', 'enrollment_ids.course_id.credit_hours', 'enrollment_ids.state')
+    def _compute_academic_performance(self):
+        for record in self:
+            total_points = 0.0
+            total_credits = 0
+            earned = 0
+            for enr in record.enrollment_ids.filtered(lambda e: e.state in ('enrolled', 'completed')):
+                credits = enr.course_id.credit_hours or 0
+                if credits > 0 and enr.grade_ids:
+                    total_points += enr.grade_point * credits
+                    total_credits += credits
+                    if enr.is_passed:
+                        earned += credits
+            record.gpa = round(total_points / total_credits, 2) if total_credits > 0 else 0.00
+            record.earned_credits = earned
+
+    def action_view_grades(self):
+        """Smart button action to view all gradebook entries for this student"""
+        self.ensure_one()
+        return {
+            'name': _('Student Grades - %s') % self.name,
+            'type': 'ir.actions.act_window',
+            'res_model': 'unisphere.grade',
             'view_mode': 'list,form',
             'domain': [('student_id', '=', self.id)],
             'context': {'default_student_id': self.id},

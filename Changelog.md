@@ -4,6 +4,51 @@ All notable changes to the UniSphere University ERP project will be documented i
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [Phase 6: Continuous Assessments & Gradebook Engine] - 2026-10-29
+
+### Added
+- Implemented `unisphere.assessment` course component model:
+  - Supports types: Quiz, Assignment, Midterm Exam, Term Project, Final Exam, Lab Practical.
+  - Evaluation parameters: `max_marks`, `weightage` (%), `due_date`, and lifecycle state machine (`draft`, `announced`, `grading`, `published`).
+  - Validation: rejects non-positive marks, weightage out of range (1-100%), and ensures total section assessment weightage does not exceed 100%.
+  - Computed class metrics: `graded_count` and `average_score` (%).
+  - Header actions: Announce, Enter Grades (modal wizard), and Publish Grades.
+- Implemented `unisphere.grade` student marks entry model:
+  - Links Student $\leftrightarrow$ Assessment $\leftrightarrow$ Course Section $\leftrightarrow$ Enrollment.
+  - Automatically computes score `percentage`, official `letter_grade` (A, A-, B+, B, B-, C+, C, D, F), and standard 4.0 `grade_point`.
+  - Database constraint: `UNIQUE(assessment_id, student_id)`.
+  - Validation: rejects marks exceeding maximum assessment points or marks for students not enrolled.
+- Implemented `unisphere.grade.wizard` & `unisphere.grade.wizard.line`:
+  - 1-click batch grade entry dialog for faculty, auto-populating enrolled students in an interactive roster grid.
+  - Re-evaluates assessment state and propagates recalculated scores.
+- Enhanced `unisphere.enrollment`:
+  - Computed composite progress score `final_grade`, normalized across evaluated assessment weightages.
+  - Computed official course `letter_grade`, `grade_point`, and boolean `is_passed`.
+  - Embedded Assessment Marks subtable and Grade Performance summary card in enrollment form view.
+- Enhanced `unisphere.student`:
+  - Institutional cumulative `gpa` (Grade Point Average weighted by course credit hours) and `earned_credits`.
+  - Smart button **CGPA** with trophy icon and color-coded status badges.
+- Enhanced `unisphere.course.section`:
+  - Smart buttons **Assessments** and **Gradebook**.
+  - Embedded Assessments & Weightage notebook tab.
+- Created declarative XML views:
+  - Assessment List, Form, and Search views.
+  - Gradebook List, Pivot Matrix, Form, and Search views.
+  - Quick Grade Entry Wizard modal form.
+- Added navigation submenus under **Grades & Exams**: **Course Assessments** and **Gradebook Matrix**.
+- Loaded realistic demo assessments (5 components totaling 100% weightage) and published evaluation marks across CS-101 Section 1A cohort.
+- Added automated unit test suite (`tests/test_assessments_grades.py`) with 7 test cases covering weightage bounds, letter grade scale mapping, duplicate grade rejection, max marks enforcement, unenrolled rejection, composite GPA math, and batch wizard execution.
+
+### Validated
+- Passed 25/25 automated unit tests with 0 failures, 0 errors, and 0 warnings.
+- Verified live database metrics:
+  - Ayesha Malik: 93.6% Course Score $\rightarrow$ Grade **A** (4.00 GPA), 3 earned credits
+  - Bilal Ahmed Khan: 78.0% Course Score $\rightarrow$ Grade **B+** (3.30 GPA), 3 earned credits
+  - Muhammad Usman: 47.8% Course Score $\rightarrow$ Grade **F** (0.00 GPA, Needs Academic Counseling)
+  - CS-101 Section 1A: Midterm Avg 71.7%, Quiz 1 Avg 73.3%, Assignment 1 Avg 76.0%
+
+---
+
 ## [Phase 5: Attendance Tracking] - 2026-10-28
 
 ### Added

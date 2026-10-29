@@ -58,6 +58,18 @@
                                 icon="fa-calendar-check-o">
                             <field name="attendance_count" widget="statinfo" string="Attendance"/>
                         </button>
+                        <button name="action_view_assessments"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-tasks">
+                            <field name="assessment_count" widget="statinfo" string="Assessments"/>
+                        </button>
+                        <button name="action_view_gradebook"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-bar-chart">
+                            <span class="o_stat_text">Gradebook</span>
+                        </button>
                     </div>
                     <div class="oe_title">
                         <label for="name" class="oe_edit_only" string="Section Identifier"/>
@@ -98,10 +110,30 @@
                                     <field name="attendance_rate" widget="badge"
                                            decoration-success="attendance_rate >= 75"
                                            decoration-danger="attendance_rate &lt; 75"/>
-                                    <field name="final_grade"/>
+                                    <field name="final_grade" string="Total Score (%)"/>
+                                    <field name="letter_grade" widget="badge"/>
+                                    <field name="grade_point" string="GPA Pt"/>
                                     <field name="state" widget="badge"
                                            decoration-success="state == 'enrolled'"
                                            decoration-warning="state == 'dropped'"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Assessments &amp; Weightage" name="assessments_page">
+                            <field name="assessment_ids">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="assessment_type" widget="badge"/>
+                                    <field name="due_date"/>
+                                    <field name="max_marks"/>
+                                    <field name="weightage" string="Weight (%)"/>
+                                    <field name="graded_count" string="Graded"/>
+                                    <field name="average_score" widget="progressbar" string="Avg (%)"/>
+                                    <field name="state" widget="badge"
+                                           decoration-success="state == 'published'"
+                                           decoration-info="state == 'announced'"
+                                           decoration-warning="state == 'grading'"
+                                           decoration-muted="state == 'draft'"/>
                                 </list>
                             </field>
                         </page>

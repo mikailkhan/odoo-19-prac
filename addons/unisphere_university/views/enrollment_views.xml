@@ -13,7 +13,9 @@
                 <field name="department_id"/>
                 <field name="enrollment_date"/>
                 <field name="attendance_rate" widget="progressbar" string="Attendance"/>
-                <field name="final_grade"/>
+                <field name="final_grade" string="Score (%)"/>
+                <field name="letter_grade" widget="badge"/>
+                <field name="grade_point" string="GPA"/>
                 <field name="state" widget="badge"
                        decoration-success="state == 'enrolled'"
                        decoration-info="state == 'draft'"
@@ -57,8 +59,17 @@
                             <field name="course_id"/>
                             <field name="term_id"/>
                             <field name="department_id"/>
-                            <field name="final_grade"/>
                             <field name="active" widget="boolean_toggle"/>
+                        </group>
+                    </group>
+                    <group string="Academic Grade Performance">
+                        <group>
+                            <field name="final_grade" string="Composite Score (%)"/>
+                            <field name="letter_grade"/>
+                        </group>
+                        <group>
+                            <field name="grade_point" string="Grade Point (4.0)"/>
+                            <field name="is_passed" widget="boolean_toggle"/>
                         </group>
                     </group>
                     <group string="Attendance Compliance &amp; Metrics">
@@ -72,6 +83,25 @@
                         </group>
                     </group>
                     <notebook>
+                        <page string="Assessment Marks" name="assessment_marks">
+                            <field name="grade_ids" readonly="1">
+                                <list>
+                                    <field name="assessment_id"/>
+                                    <field name="marks_obtained"/>
+                                    <field name="max_marks"/>
+                                    <field name="percentage" widget="badge"
+                                           decoration-success="percentage >= 70"
+                                           decoration-warning="percentage >= 50 and percentage &lt; 70"
+                                           decoration-danger="percentage &lt; 50"/>
+                                    <field name="letter_grade" widget="badge"/>
+                                    <field name="grade_point"/>
+                                    <field name="remarks"/>
+                                    <field name="state" widget="badge"
+                                           decoration-success="state == 'published'"
+                                           decoration-info="state == 'graded'"/>
+                                </list>
+                            </field>
+                        </page>
                         <page string="Attendance History" name="attendance_history">
                             <field name="attendance_ids" readonly="1">
                                 <list>

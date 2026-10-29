@@ -102,6 +102,16 @@ class UnisphereCourseSection(models.Model):
         digits=(5, 2),
         help='Overall attendance percentage across all enrolled students and sessions.'
     )
+    assessment_ids = fields.One2many(
+        'unisphere.assessment',
+        'section_id',
+        string='Assessments'
+    )
+    assessment_count = fields.Integer(
+        string='Assessment Count',
+        compute='_compute_assessment_count',
+        store=True
+    )
     state = fields.Selection([
         ('draft', 'Draft Setup'),
         ('open', 'Open for Registration'),
@@ -183,6 +193,35 @@ class UnisphereCourseSection(models.Model):
             'context': {
                 'default_section_id': self.id,
             },
+        }
+
+    @api.depends('assessment_ids')
+    def _compute_assessment_count(self):
+        for record in self:
+            record.assessment_count = len(record.assessment_ids)
+
+    def action_view_assessments(self):
+        """Smart button action to view assessments for this section"""
+        self.ensure_one()
+        return {
+            'name': _('Assessments - %s') % self.name,
+            'type': 'ir.actions.act_window',
+            'res_model': 'unisphere.assessment',
+            'view_mode': 'list,form',
+            'domain': [('section_id', '=', self.id)],
+            'context': {'default_section_id': self.id},
+        }
+
+    def action_view_gradebook(self):
+        """Smart button action to view all gradebook entries for this section"""
+        self.ensure_one()
+        return {
+            'name': _('Gradebook - %s') % self.name,
+            'type': 'ir.actions.act_window',
+            'res_model': 'unisphere.grade',
+            'view_mode': 'list,pivot,form',
+            'domain': [('section_id', '=', self.id)],
+            'context': {'default_section_id': self.id},
         }
 
     @api.constrains('capacity')

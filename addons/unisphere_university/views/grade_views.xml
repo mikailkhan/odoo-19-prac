@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Assessment List View -->
+    <record id="view_unisphere_assessment_list" model="ir.ui.view">
+        <field name="name">unisphere.assessment.list</field>
+        <field name="model">unisphere.assessment</field>
+        <field name="arch" type="xml">
+            <list string="Course Assessments" sample="1">
+                <field name="name"/>
+                <field name="section_id"/>
+                <field name="assessment_type" widget="badge"/>
+                <field name="due_date"/>
+                <field name="max_marks"/>
+                <field name="weightage" string="Weight (%)"/>
+                <field name="graded_count" string="Graded"/>
+                <field name="average_score" widget="progressbar" string="Class Avg"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'published'"
+                       decoration-info="state == 'announced'"
+                       decoration-warning="state == 'grading'"
+                       decoration-muted="state == 'draft'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Assessment Form View -->
+    <record id="view_unisphere_assessment_form" model="ir.ui.view">
+        <field name="name">unisphere.assessment.form</field>
+        <field name="model">unisphere.assessment</field>
+        <field name="arch" type="xml">
+            <form string="Course Assessment Component">
+                <header>
+                    <button name="action_quick_grade" string="Enter Grades" type="object"
+                            class="btn btn-primary" icon="fa-pencil-square-o"/>
+                    <button name="action_announce" string="Announce Assessment" type="object"
+                            class="oe_highlight" invisible="state != 'draft'"/>
+                    <button name="action_publish" string="Publish Grades" type="object"
+                            class="oe_highlight" invisible="state in ('draft', 'published')"/>
+                    <button name="action_reset_draft" string="Reset to Draft" type="object"
+                            invisible="state == 'draft'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,announced,grading,published"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only" string="Assessment Title"/>
+                        <h1>
+                            <field name="name" placeholder="e.g. Midterm Examination, Quiz 1, Term Project"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Curricular Scope">
+                            <field name="section_id" options="{'no_create': True}"/>
+                            <field name="course_id"/>
+                            <field name="term_id"/>
+                            <field name="department_id"/>
+                        </group>
+                        <group string="Evaluation Parameters">
+                            <field name="assessment_type"/>
+                            <field name="max_marks"/>
+                            <field name="weightage"/>
+                            <field name="due_date"/>
+                            <field name="average_score" widget="progressbar"/>
+                            <field name="active" widget="boolean_toggle"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Student Marks Roster" name="grades_page">
+                            <field name="grade_ids" readonly="1">
+                                <list>
+                                    <field name="student_id"/>
+                                    <field name="marks_obtained"/>
+                                    <field name="max_marks"/>
+                                    <field name="percentage" widget="badge"
+                                           decoration-success="percentage >= 70"
+                                           decoration-warning="percentage >= 50 and percentage &lt; 70"
+                                           decoration-danger="percentage &lt; 50"/>
+                                    <field name="letter_grade" widget="badge"/>
+                                    <field name="grade_point"/>
+                                    <field name="remarks"/>
+                                    <field name="state" widget="badge"
+                                           decoration-success="state == 'published'"
+                                           decoration-info="state == 'graded'"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Assessment Search View -->
+    <record id="view_unisphere_assessment_search" model="ir.ui.view">
+        <field name="name">unisphere.assessment.search</field>
+        <field name="model">unisphere.assessment</field>
+        <field name="arch" type="xml">
+            <search string="Search Assessments">
+                <field name="name"/>
+                <field name="section_id"/>
+                <field name="course_id"/>
+                <field name="term_id"/>
+                <separator/>
+                <filter string="Quizzes" name="filter_quizzes" domain="[('assessment_type', '=', 'quiz')]"/>
+                <filter string="Assignments" name="filter_assignments" domain="[('assessment_type', '=', 'assignment')]"/>
+                <filter string="Exams" name="filter_exams" domain="[('assessment_type', 'in', ('midterm', 'final'))]"/>
+                <filter string="Published" name="filter_published" domain="[('state', '=', 'published')]"/>
+                <group>
+                    <filter string="Course Section" name="group_by_section" context="{'group_by': 'section_id'}"/>
+                    <filter string="Assessment Type" name="group_by_type" context="{'group_by': 'assessment_type'}"/>
+                    <filter string="Status" name="group_by_state" context="{'group_by': 'state'}"/>
+                    <filter string="Academic Term" name="group_by_term" context="{'group_by': 'term_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Window Action: Assessments -->
+    <record id="action_unisphere_assessment" model="ir.actions.act_window">
+        <field name="name">Course Assessments</field>
+        <field name="res_model">unisphere.assessment</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_unisphere_assessment_search"/>
+        <field name="context">{'search_default_group_by_section': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Define course assessment components!
+            </p>
+            <p>
+                Configure quizzes, assignments, midterms, and finals with relative grade weightages.
+            </p>
+        </field>
+    </record>
+
+    <!-- Grade List View -->
+    <record id="view_unisphere_grade_list" model="ir.ui.view">
+        <field name="name">unisphere.grade.list</field>
+        <field name="model">unisphere.grade</field>
+        <field name="arch" type="xml">
+            <list string="Gradebook Register" sample="1">
+                <field name="student_id"/>
+                <field name="section_id"/>
+                <field name="assessment_id"/>
+                <field name="marks_obtained"/>
+                <field name="max_marks"/>
+                <field name="percentage" widget="badge"
+                       decoration-success="percentage >= 70"
+                       decoration-warning="percentage >= 50 and percentage &lt; 70"
+                       decoration-danger="percentage &lt; 50"/>
+                <field name="letter_grade" widget="badge"/>
+                <field name="grade_point"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'published'"
+                       decoration-info="state == 'graded'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Grade Pivot View (Gradebook Matrix) -->
+    <record id="view_unisphere_grade_pivot" model="ir.ui.view">
+        <field name="name">unisphere.grade.pivot</field>
+        <field name="model">unisphere.grade</field>
+        <field name="arch" type="xml">
+            <pivot string="Gradebook Analytics Matrix" sample="1">
+                <field name="student_id" type="row"/>
+                <field name="assessment_id" type="col"/>
+                <field name="marks_obtained" type="measure"/>
+                <field name="percentage" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- Grade Form View -->
+    <record id="view_unisphere_grade_form" model="ir.ui.view">
+        <field name="name">unisphere.grade.form</field>
+        <field name="model">unisphere.grade</field>
+        <field name="arch" type="xml">
+            <form string="Student Grade Entry">
+                <header>
+                    <button name="action_publish_grade" string="Publish Grade" type="object"
+                            class="oe_highlight" invisible="state == 'published'"/>
+                    <button name="action_reset_draft" string="Reset to Draft" type="object"
+                            invisible="state == 'draft'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,graded,published"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="display_name" class="oe_edit_only" string="Grade Record"/>
+                        <h1>
+                            <field name="display_name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Student &amp; Assessment">
+                            <field name="assessment_id" options="{'no_create': True}"/>
+                            <field name="student_id" options="{'no_create': True}"/>
+                            <field name="section_id"/>
+                            <field name="enrollment_id" readonly="1"/>
+                        </group>
+                        <group string="Score &amp; Grade Points">
+                            <field name="marks_obtained"/>
+                            <field name="max_marks"/>
+                            <field name="percentage" widget="progressbar"/>
+                            <field name="letter_grade"/>
+                            <field name="grade_point"/>
+                        </group>
+                    </group>
+                    <group string="Faculty Feedback">
+                        <field name="remarks" placeholder="Observations, deductions, or encouragement..."/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Grade Search View -->
+    <record id="view_unisphere_grade_search" model="ir.ui.view">
+        <field name="name">unisphere.grade.search</field>
+        <field name="model">unisphere.grade</field>
+        <field name="arch" type="xml">
+            <search string="Search Grades">
+                <field name="student_id"/>
+                <field name="section_id"/>
+                <field name="assessment_id"/>
+                <field name="letter_grade"/>
+                <separator/>
+                <filter string="Published" name="filter_published" domain="[('state', '=', 'published')]"/>
+                <filter string="Passing Grades (>= 50%)" name="filter_passing" domain="[('percentage', '>=', 50.0)]"/>
+                <filter string="Failing Grades (&lt; 50%)" name="filter_failing" domain="[('percentage', '&lt;', 50.0)]"/>
+                <group>
+                    <filter string="Course Section" name="group_by_section" context="{'group_by': 'section_id'}"/>
+                    <filter string="Assessment" name="group_by_assessment" context="{'group_by': 'assessment_id'}"/>
+                    <filter string="Student" name="group_by_student" context="{'group_by': 'student_id'}"/>
+                    <filter string="Letter Grade" name="group_by_letter" context="{'group_by': 'letter_grade'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Window Action: Grades -->
+    <record id="action_unisphere_grade" model="ir.actions.act_window">
+        <field name="name">Gradebook Entries</field>
+        <field name="res_model">unisphere.grade</field>
+        <field name="view_mode">list,pivot,form</field>
+        <field name="search_view_id" ref="view_unisphere_grade_search"/>
+        <field name="context">{'search_default_group_by_section': 1, 'search_default_group_by_assessment': 1}</field>
+    </record>
+
+    <!-- Grade Wizard Form View -->
+    <record id="view_unisphere_grade_wizard_form" model="ir.ui.view">
+        <field name="name">unisphere.grade.wizard.form</field>
+        <field name="model">unisphere.grade.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Record Assessment Grades">
+                <sheet>
+                    <group>
+                        <group string="Assessment Details">
+                            <field name="assessment_id" readonly="1"/>
+                            <field name="section_id" readonly="1"/>
+                            <field name="max_marks" readonly="1"/>
+                        </group>
+                    </group>
+                    <div class="alert alert-info d-flex align-items-center mb-3" role="alert">
+                        <div>
+                            <strong>Faculty Grade Entry:</strong> Enter the marks obtained for each student (maximum <field name="max_marks" readonly="1"/> points). Letter grades and grade points will be automatically recalculated.
+                        </div>
+                    </div>
+                    <notebook>
+                        <page string="Student Marks Roster">
+                            <field name="line_ids">
+                                <list editable="bottom" create="0" delete="0">
+                                    <field name="student_reg_no"/>
+                                    <field name="student_id"/>
+                                    <field name="marks_obtained"/>
+                                    <field name="remarks" placeholder="Optional comments..."/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <footer>
+                    <button name="action_save_grades" string="Save &amp; Recalculate Grades" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Window Action: Quick Grade Wizard -->
+    <record id="action_unisphere_grade_wizard" model="ir.actions.act_window">
+        <field name="name">Record Assessment Marks</field>
+        <field name="res_model">unisphere.grade.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>
