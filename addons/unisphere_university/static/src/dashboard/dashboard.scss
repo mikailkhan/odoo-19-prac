@@ -1,0 +1,646 @@
+/* UniSphere Executive Academic Dashboard - Stitch Design System */
+
+.o_unisphere_dashboard {
+    --uni-primary: #000f3f;
+    --uni-primary-container: #172554;
+    --uni-secondary: #2563eb;
+    --uni-secondary-hover: #1d4ed8;
+    --uni-teal: #0f766e;
+    --uni-surface: #f8fafc;
+    --uni-surface-card: #ffffff;
+    --uni-border: #e2e8f0;
+    --uni-border-subtle: rgba(198, 197, 208, 0.35);
+    --uni-text-main: #0f172a;
+    --uni-text-muted: #64748b;
+    --uni-success: #10b981;
+    --uni-warning: #f59e0b;
+    --uni-danger: #ef4444;
+
+    background-color: var(--uni-surface);
+    color: var(--uni-text-main);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    min-height: 100%;
+    padding: 1.5rem 2rem 3rem 2rem;
+    overflow-y: auto;
+
+    /* Top Header Strip */
+    .uni-dashboard-header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1.25rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid var(--uni-border);
+        margin-bottom: 1.75rem;
+
+        .uni-header-title-group {
+            .uni-badge-system {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.375rem;
+                padding: 0.2rem 0.6rem;
+                border-radius: 9999px;
+                background-color: #dbeafe;
+                color: var(--uni-secondary);
+                font-size: 0.75rem;
+                font-weight: 600;
+                margin-bottom: 0.35rem;
+            }
+
+            h1 {
+                font-size: 1.625rem;
+                font-weight: 700;
+                color: var(--uni-primary-container);
+                margin: 0;
+                letter-spacing: -0.02em;
+            }
+
+            p {
+                margin: 0.25rem 0 0 0;
+                font-size: 0.875rem;
+                color: var(--uni-text-muted);
+            }
+        }
+
+        .uni-header-controls {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.75rem;
+
+            .uni-term-select {
+                height: 38px;
+                padding: 0 1rem;
+                border-radius: 6px;
+                border: 1px solid var(--uni-border);
+                background-color: var(--uni-surface-card);
+                color: var(--uni-text-main);
+                font-weight: 600;
+                font-size: 0.875rem;
+                cursor: pointer;
+                box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+
+                &:focus {
+                    outline: none;
+                    border-color: var(--uni-secondary);
+                }
+            }
+
+            .uni-action-btn-group {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+
+                .btn-uni-primary {
+                    background-color: var(--uni-primary-container);
+                    color: #ffffff;
+                    border: none;
+                    border-radius: 6px;
+                    padding: 0.5rem 0.875rem;
+                    font-size: 0.8125rem;
+                    font-weight: 600;
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 0.375rem;
+                    cursor: pointer;
+                    transition: all 0.15s ease-in-out;
+                    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+
+                    &:hover {
+                        background-color: var(--uni-secondary);
+                        transform: translateY(-1px);
+                    }
+                }
+
+                .btn-uni-secondary {
+                    background-color: #ffffff;
+                    color: var(--uni-text-main);
+                    border: 1px solid var(--uni-border);
+                    border-radius: 6px;
+                    padding: 0.5rem 0.875rem;
+                    font-size: 0.8125rem;
+                    font-weight: 600;
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 0.375rem;
+                    cursor: pointer;
+                    transition: all 0.15s ease-in-out;
+
+                    &:hover {
+                        background-color: #f1f5f9;
+                        border-color: #cbd5e1;
+                    }
+                }
+            }
+        }
+    }
+
+    /* 4 KPI Hero Cards Grid */
+    .uni-kpi-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 1.25rem;
+        margin-bottom: 1.75rem;
+
+        .uni-kpi-card {
+            background-color: var(--uni-surface-card);
+            border-radius: 10px;
+            border: 1px solid var(--uni-border);
+            padding: 1.25rem;
+            box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+            display: flex;
+            flex-col: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            cursor: pointer;
+
+            &:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 16px -2px rgba(15, 23, 42, 0.08);
+            }
+
+            .uni-kpi-header {
+                display: flex;
+                align-items: flex-start;
+                justify-content: space-between;
+
+                .uni-kpi-label {
+                    font-size: 0.75rem;
+                    font-weight: 700;
+                    text-transform: uppercase;
+                    letter-spacing: 0.05em;
+                    color: var(--uni-text-muted);
+                }
+
+                .uni-kpi-icon {
+                    width: 42px;
+                    height: 42px;
+                    border-radius: 8px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 1.25rem;
+
+                    &.blue { background-color: #eff6ff; color: #2563eb; }
+                    &.teal { background-color: #f0fdfa; color: #0f766e; }
+                    &.amber { background-color: #fffbeb; color: #d97706; }
+                    &.purple { background-color: #f5f3ff; color: #7c3aed; }
+                }
+            }
+
+            .uni-kpi-body {
+                margin-top: 0.5rem;
+                display: flex;
+                align-items: baseline;
+                gap: 0.625rem;
+
+                .uni-kpi-value {
+                    font-size: 2rem;
+                    font-weight: 800;
+                    color: var(--uni-primary-container);
+                    letter-spacing: -0.02em;
+                    line-height: 1;
+                }
+
+                .uni-kpi-pill {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 0.25rem;
+                    padding: 0.15rem 0.5rem;
+                    border-radius: 9999px;
+                    font-size: 0.75rem;
+                    font-weight: 600;
+
+                    &.green { background-color: #ecfdf5; color: #047857; }
+                    &.blue { background-color: #eff6ff; color: #1d4ed8; }
+                    &.amber { background-color: #fffbeb; color: #b45309; }
+                }
+            }
+
+            .uni-kpi-footer {
+                margin-top: 1rem;
+                padding-top: 0.75rem;
+                border-top: 1px solid #f1f5f9;
+                font-size: 0.75rem;
+                color: var(--uni-text-muted);
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+
+                strong {
+                    color: var(--uni-text-main);
+                }
+            }
+        }
+    }
+
+    /* Middle Row Analytics (65% / 35%) */
+    .uni-analytics-row {
+        display: grid;
+        grid-template-columns: 2fr 1.15fr;
+        gap: 1.25rem;
+        margin-bottom: 1.75rem;
+
+        @media (max-width: 1024px) {
+            grid-template-columns: 1fr;
+        }
+
+        .uni-card {
+            background-color: var(--uni-surface-card);
+            border-radius: 10px;
+            border: 1px solid var(--uni-border);
+            padding: 1.25rem;
+            box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+
+            .uni-card-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-bottom: 1.25rem;
+
+                h2 {
+                    font-size: 1.0625rem;
+                    font-weight: 700;
+                    color: var(--uni-primary-container);
+                    margin: 0;
+                }
+
+                p {
+                    font-size: 0.8125rem;
+                    color: var(--uni-text-muted);
+                    margin: 0.2rem 0 0 0;
+                }
+            }
+        }
+
+        /* Department Bar Visualizer */
+        .uni-dept-chart-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+
+            .uni-dept-bar-item {
+                display: flex;
+                flex-direction: column;
+                gap: 0.35rem;
+
+                .uni-dept-bar-meta {
+                    display: flex;
+                    justify-content: space-between;
+                    font-size: 0.8125rem;
+                    font-weight: 600;
+
+                    .uni-dept-title {
+                        color: var(--uni-text-main);
+                        display: flex;
+                        align-items: center;
+                        gap: 0.5rem;
+
+                        .uni-color-dot {
+                            width: 10px;
+                            height: 10px;
+                            border-radius: 50%;
+                        }
+                    }
+
+                    .uni-dept-stats {
+                        color: var(--uni-text-muted);
+                    }
+                }
+
+                .uni-dept-progress-track {
+                    height: 9px;
+                    border-radius: 9999px;
+                    background-color: #f1f5f9;
+                    overflow: hidden;
+
+                    .uni-dept-progress-fill {
+                        height: 100%;
+                        border-radius: 9999px;
+                        transition: width 0.4s ease;
+                    }
+                }
+            }
+        }
+
+        /* Fee Velocity Multi-segment Bar */
+        .uni-fee-velocity {
+            .uni-fee-header {
+                display: flex;
+                justify-content: space-between;
+                font-size: 0.8125rem;
+                font-weight: 700;
+                margin-bottom: 0.5rem;
+
+                .rate-pill {
+                    color: #059669;
+                }
+            }
+
+            .uni-multi-progress {
+                height: 14px;
+                border-radius: 9999px;
+                background-color: #f1f5f9;
+                display: flex;
+                overflow: hidden;
+                box-shadow: inset 0 1px 2px rgba(0,0,0,0.06);
+
+                .segment-collected { background-color: #10b981; }
+                .segment-pending { background-color: #f59e0b; }
+                .segment-overdue { background-color: #ef4444; }
+            }
+
+            .uni-fee-legend-grid {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 0.625rem;
+                margin-top: 1rem;
+                text-align: center;
+
+                .legend-box {
+                    padding: 0.625rem 0.5rem;
+                    border-radius: 8px;
+                    background-color: #f8fafc;
+                    border: 1px solid #f1f5f9;
+
+                    .legend-title {
+                        display: block;
+                        font-size: 0.6875rem;
+                        font-weight: 700;
+                        text-transform: uppercase;
+                        color: var(--uni-text-muted);
+                    }
+
+                    .legend-value {
+                        display: block;
+                        font-size: 1rem;
+                        font-weight: 700;
+                        margin-top: 0.2rem;
+
+                        &.green { color: #047857; }
+                        &.amber { color: #b45309; }
+                        &.red { color: #b91c1c; }
+                    }
+                }
+            }
+        }
+
+        /* Department Attendance Progress */
+        .uni-attendance-pulse {
+            margin-top: 1.25rem;
+            padding-top: 1rem;
+            border-top: 1px solid #f1f5f9;
+
+            .pulse-title {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                font-size: 0.8125rem;
+                font-weight: 700;
+                color: var(--uni-primary-container);
+                margin-bottom: 0.75rem;
+            }
+
+            .pulse-bars {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+
+                .pulse-row {
+                    display: flex;
+                    justify-content: space-between;
+                    font-size: 0.75rem;
+                    color: var(--uni-text-main);
+                    margin-bottom: 0.2rem;
+                }
+
+                .pulse-track {
+                    height: 6px;
+                    border-radius: 9999px;
+                    background-color: #f1f5f9;
+                    overflow: hidden;
+
+                    .pulse-fill {
+                        height: 100%;
+                        border-radius: 9999px;
+                        background-color: var(--uni-secondary);
+
+                        &.danger { background-color: var(--uni-danger); }
+                        &.teal { background-color: var(--uni-teal); }
+                    }
+                }
+            }
+        }
+    }
+
+    /* Lower Grid (Recent Roster & Alerts) */
+    .uni-lower-grid {
+        display: grid;
+        grid-template-columns: 1.8fr 1.2fr;
+        gap: 1.25rem;
+
+        @media (max-width: 1024px) {
+            grid-template-columns: 1fr;
+        }
+
+        .uni-card {
+            background-color: var(--uni-surface-card);
+            border-radius: 10px;
+            border: 1px solid var(--uni-border);
+            padding: 1.25rem;
+            box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+
+            .uni-card-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-bottom: 1rem;
+
+                h2 {
+                    font-size: 1.0625rem;
+                    font-weight: 700;
+                    color: var(--uni-primary-container);
+                    margin: 0;
+                }
+
+                .link-view-all {
+                    color: var(--uni-secondary);
+                    font-size: 0.8125rem;
+                    font-weight: 600;
+                    cursor: pointer;
+                    text-decoration: none;
+
+                    &:hover {
+                        text-decoration: underline;
+                    }
+                }
+            }
+        }
+
+        /* Roster Table */
+        .uni-table-responsive {
+            overflow-x: auto;
+
+            .uni-table {
+                width: 100%;
+                border-collapse: separate;
+                border-spacing: 0;
+                font-size: 0.8125rem;
+
+                th {
+                    background-color: #f8fafc;
+                    color: var(--uni-text-muted);
+                    font-weight: 600;
+                    text-transform: uppercase;
+                    font-size: 0.6875rem;
+                    letter-spacing: 0.05em;
+                    padding: 0.625rem 0.75rem;
+                    border-bottom: 1px solid var(--uni-border);
+                    text-align: left;
+                }
+
+                td {
+                    padding: 0.75rem 0.75rem;
+                    border-bottom: 1px solid #f1f5f9;
+                    vertical-align: middle;
+                }
+
+                tr.uni-table-row {
+                    cursor: pointer;
+                    transition: background-color 0.15s ease;
+
+                    &:hover {
+                        background-color: #f8fafc;
+                    }
+                }
+
+                .student-cell {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.625rem;
+
+                    .student-avatar-circle {
+                        width: 30px;
+                        height: 30px;
+                        border-radius: 50%;
+                        background-color: #e0e7ff;
+                        color: #3730a3;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-weight: 700;
+                        font-size: 0.6875rem;
+                    }
+
+                    .student-meta {
+                        display: flex;
+                        flex-direction: column;
+
+                        .student-name {
+                            font-weight: 600;
+                            color: var(--uni-text-main);
+                        }
+
+                        .student-code {
+                            font-size: 0.6875rem;
+                            color: var(--uni-text-muted);
+                            font-family: monospace;
+                        }
+                    }
+                }
+
+                .chip {
+                    display: inline-block;
+                    padding: 0.15rem 0.5rem;
+                    border-radius: 4px;
+                    font-size: 0.6875rem;
+                    font-weight: 700;
+                    text-transform: uppercase;
+
+                    &.clear { background-color: #ecfdf5; color: #047857; }
+                    &.dues_pending { background-color: #fffbeb; color: #b45309; }
+                    &.overdue { background-color: #fef2f2; color: #b91c1c; }
+                }
+            }
+        }
+
+        /* Actionable Alerts Stack */
+        .uni-alerts-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 0.875rem;
+
+            .uni-alert-item {
+                border-radius: 8px;
+                padding: 0.875rem 1rem;
+                border-left: 4px solid;
+                display: flex;
+                align-items: flex-start;
+                justify-content: space-between;
+                gap: 0.75rem;
+                background-color: #f8fafc;
+
+                &.danger {
+                    border-left-color: var(--uni-danger);
+                    background-color: #fef2f2;
+                }
+
+                &.warning {
+                    border-left-color: var(--uni-warning);
+                    background-color: #fffbeb;
+                }
+
+                .alert-content {
+                    .alert-badge {
+                        font-size: 0.6875rem;
+                        font-weight: 700;
+                        text-transform: uppercase;
+                        letter-spacing: 0.05em;
+                        margin-bottom: 0.25rem;
+                        display: block;
+
+                        &.danger { color: #b91c1c; }
+                        &.warning { color: #b45309; }
+                    }
+
+                    .alert-title {
+                        font-weight: 700;
+                        font-size: 0.875rem;
+                        color: var(--uni-text-main);
+                        margin: 0 0 0.25rem 0;
+                    }
+
+                    .alert-desc {
+                        font-size: 0.75rem;
+                        color: var(--uni-text-muted);
+                        margin: 0;
+                        line-height: 1.4;
+                    }
+                }
+
+                .btn-alert-action {
+                    padding: 0.35rem 0.65rem;
+                    border-radius: 5px;
+                    border: 1px solid rgba(0, 0, 0, 0.1);
+                    background-color: #ffffff;
+                    font-size: 0.6875rem;
+                    font-weight: 700;
+                    color: var(--uni-text-main);
+                    cursor: pointer;
+                    white-space: nowrap;
+                    transition: all 0.15s ease;
+
+                    &:hover {
+                        background-color: #f1f5f9;
+                    }
+                }
+            }
+        }
+    }
+}

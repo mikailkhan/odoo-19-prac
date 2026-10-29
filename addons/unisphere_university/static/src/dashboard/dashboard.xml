@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="unisphere_university.Dashboard">
+        <div class="o_unisphere_dashboard">
+            <!-- Loading Spinner State -->
+            <div t-if="state.loading" class="d-flex justify-content-center align-items-center p-5 min-vh-50">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading Dashboard...</span>
+                </div>
+            </div>
+
+            <!-- Dashboard Content -->
+            <div t-elif="state.data" class="uni-dashboard-content">
+                <!-- 1. Top Executive Header Strip -->
+                <header class="uni-dashboard-header">
+                    <div class="uni-header-title-group">
+                        <div class="uni-badge-system">
+                            <i class="fa fa-university me-1"/>
+                            <span>Northstar Institutional ERP • v19.0</span>
+                        </div>
+                        <h1>Executive Academic Dashboard</h1>
+                        <p>
+                            Northstar University of Technology • Main Campus, Islamabad • Sector H-12 Academic Enclave
+                        </p>
+                    </div>
+
+                    <div class="uni-header-controls">
+                        <!-- Term Switcher Dropdown -->
+                        <select class="uni-term-select" t-on-change="onTermChange">
+                            <t t-foreach="state.data.terms" t-as="term" t-key="term.id">
+                                <option t-att-value="term.id" t-att-selected="term.id === state.selectedTermId">
+                                    <t t-esc="term.name"/> <t t-if="term.is_active">(Active)</t>
+                                </option>
+                            </t>
+                        </select>
+
+                        <!-- Quick Action Buttons -->
+                        <div class="uni-action-btn-group">
+                            <button class="btn-uni-secondary" t-on-click="openCreateStudent" title="Register New Student">
+                                <i class="fa fa-user-plus me-1 text-primary"/>
+                                <span>Add Student</span>
+                            </button>
+                            <button class="btn-uni-secondary" t-on-click="openCreateSection" title="Create Course Section">
+                                <i class="fa fa-book me-1 text-info"/>
+                                <span>New Section</span>
+                            </button>
+                            <button class="btn-uni-secondary" t-on-click="openTakeAttendance" title="Mark Session Attendance">
+                                <i class="fa fa-check-square me-1 text-success"/>
+                                <span>Attendance</span>
+                            </button>
+                            <button class="btn-uni-primary" t-on-click="openCreateFee" title="Issue Bursar Challan">
+                                <i class="fa fa-credit-card me-1"/>
+                                <span>Issue Challan</span>
+                            </button>
+                        </div>
+                    </div>
+                </header>
+
+                <!-- 2. 4 Hero KPI Cards Grid -->
+                <div class="uni-kpi-grid">
+                    <!-- KPI 1: Active Enrollment -->
+                    <div class="uni-kpi-card" t-on-click="openStudentsList">
+                        <div class="uni-kpi-header">
+                            <span class="uni-kpi-label">Active Enrollment</span>
+                            <div class="uni-kpi-icon blue">
+                                <i class="fa fa-graduation-cap"/>
+                            </div>
+                        </div>
+                        <div class="uni-kpi-body">
+                            <span class="uni-kpi-value"><t t-esc="state.data.kpis.active_enrollments"/></span>
+                            <span class="uni-kpi-pill green">
+                                <i class="fa fa-arrow-up me-1"/> Cohort 2024
+                            </span>
+                        </div>
+                        <div class="uni-kpi-footer">
+                            <span>Total Registered: <strong><t t-esc="state.data.kpis.total_students"/></strong></span>
+                            <i class="fa fa-angle-right"/>
+                        </div>
+                    </div>
+
+                    <!-- KPI 2: Faculty & Offerings -->
+                    <div class="uni-kpi-card" t-on-click="openFacultyList">
+                        <div class="uni-kpi-header">
+                            <span class="uni-kpi-label">Faculty &amp; Teaching Staff</span>
+                            <div class="uni-kpi-icon teal">
+                                <i class="fa fa-users"/>
+                            </div>
+                        </div>
+                        <div class="uni-kpi-body">
+                            <span class="uni-kpi-value"><t t-esc="state.data.kpis.faculty_count"/></span>
+                            <span class="uni-kpi-pill blue">
+                                100% Active
+                            </span>
+                        </div>
+                        <div class="uni-kpi-footer">
+                            <span>Active Sections: <strong><t t-esc="state.data.kpis.active_sections"/></strong></span>
+                            <i class="fa fa-angle-right"/>
+                        </div>
+                    </div>
+
+                    <!-- KPI 3: Academic Health (CGPA & Attendance) -->
+                    <div class="uni-kpi-card" t-on-click="openSectionsList">
+                        <div class="uni-kpi-header">
+                            <span class="uni-kpi-label">Average Attendance</span>
+                            <div class="uni-kpi-icon purple">
+                                <i class="fa fa-line-chart"/>
+                            </div>
+                        </div>
+                        <div class="uni-kpi-body">
+                            <span class="uni-kpi-value"><t t-esc="state.data.kpis.avg_attendance"/>%</span>
+                            <span class="uni-kpi-pill green" t-if="state.data.kpis.avg_attendance >= 75">
+                                Institutional Standard Met
+                            </span>
+                            <span class="uni-kpi-pill amber" t-else="">
+                                Attention Required
+                            </span>
+                        </div>
+                        <div class="uni-kpi-footer">
+                            <span>Term Avg CGPA: <strong><t t-esc="state.data.kpis.avg_gpa"/> / 4.00</strong></span>
+                            <i class="fa fa-angle-right"/>
+                        </div>
+                    </div>
+
+                    <!-- KPI 4: Tuition Fee Realization -->
+                    <div class="uni-kpi-card" t-on-click="() => this.openFeesList()">
+                        <div class="uni-kpi-header">
+                            <span class="uni-kpi-label">Fee Collection Velocity</span>
+                            <div class="uni-kpi-icon amber">
+                                <i class="fa fa-money"/>
+                            </div>
+                        </div>
+                        <div class="uni-kpi-body">
+                            <span class="uni-kpi-value"><t t-esc="state.data.kpis.collection_rate"/>%</span>
+                            <span class="uni-kpi-pill amber">
+                                $<t t-esc="state.data.kpis.total_receivable.toLocaleString('en-US', {minimumFractionDigits: 2})"/> Due
+                            </span>
+                        </div>
+                        <div class="uni-kpi-footer">
+                            <span>Collected: <strong>$<t t-esc="state.data.kpis.total_collected.toLocaleString('en-US', {minimumFractionDigits: 2})"/></strong></span>
+                            <i class="fa fa-angle-right"/>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Middle Analytics Row (65% / 35%) -->
+                <div class="uni-analytics-row">
+                    <!-- Left: Department Capacity & Enrollments -->
+                    <div class="uni-card">
+                        <div>
+                            <div class="uni-card-header">
+                                <div>
+                                    <h2>Academic Discipline Capacity &amp; Roster</h2>
+                                    <p>Enrollment distribution across accredited university departments</p>
+                                </div>
+                                <span class="badge bg-light text-dark font-monospace">
+                                    <t t-esc="state.data.active_term_name"/>
+                                </span>
+                            </div>
+
+                            <div class="uni-dept-chart-container">
+                                <t t-foreach="state.data.departments" t-as="dept" t-key="dept.id">
+                                    <div class="uni-dept-bar-item">
+                                        <div class="uni-dept-bar-meta">
+                                            <div class="uni-dept-title">
+                                                <span class="uni-color-dot" t-attf-style="background-color: {{dept.color}}"/>
+                                                <span><t t-esc="dept.name"/> (<t t-esc="dept.code"/>)</span>
+                                            </div>
+                                            <div class="uni-dept-stats">
+                                                <span><t t-esc="dept.student_count"/> Student(s)</span>
+                                                <span class="mx-1">•</span>
+                                                <span><t t-esc="dept.section_count"/> Section(s)</span>
+                                            </div>
+                                        </div>
+                                        <div class="uni-dept-progress-track">
+                                            <div class="uni-dept-progress-fill"
+                                                 t-attf-style="width: {{dept.student_count > 0 ? (dept.student_count / state.data.kpis.total_students * 100) : 5}}%; background-color: {{dept.color}}"/>
+                                        </div>
+                                    </div>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Bursar Velocity & Department Attendance Pulse -->
+                    <div class="uni-card">
+                        <div>
+                            <div class="uni-card-header">
+                                <div>
+                                    <h2>Institutional Health</h2>
+                                    <p>Tuition realization velocity &amp; class attendance pulse</p>
+                                </div>
+                                <i class="fa fa-shield text-muted"/>
+                            </div>
+
+                            <!-- Fee Multi-segment Bar -->
+                            <div class="uni-fee-velocity">
+                                <div class="uni-fee-header">
+                                    <span>Bursar Collections Velocity</span>
+                                    <span class="rate-pill"><t t-esc="state.data.fee_velocity.collected_pct"/>% Realized</span>
+                                </div>
+                                <div class="uni-multi-progress" title="Collected / Pending / Overdue">
+                                    <div class="segment-collected" t-attf-style="width: {{state.data.fee_velocity.collected_pct}}%"/>
+                                    <div class="segment-pending" t-attf-style="width: {{state.data.fee_velocity.pending_pct}}%"/>
+                                    <div class="segment-overdue" t-attf-style="width: {{state.data.fee_velocity.overdue_pct}}%"/>
+                                </div>
+
+                                <div class="uni-fee-legend-grid">
+                                    <div class="legend-box">
+                                        <span class="legend-title">Collected</span>
+                                        <span class="legend-value green">
+                                            $<t t-esc="state.data.fee_velocity.collected.toLocaleString('en-US', {minimumFractionDigits: 0})"/>
+                                        </span>
+                                    </div>
+                                    <div class="legend-box" t-on-click="() => this.openFeesList('unpaid')" role="button">
+                                        <span class="legend-title">Pending</span>
+                                        <span class="legend-value amber">
+                                            $<t t-esc="state.data.fee_velocity.pending.toLocaleString('en-US', {minimumFractionDigits: 0})"/>
+                                        </span>
+                                    </div>
+                                    <div class="legend-box" t-on-click="() => this.openFeesList('overdue')" role="button">
+                                        <span class="legend-title">Overdue</span>
+                                        <span class="legend-value red">
+                                            $<t t-esc="state.data.fee_velocity.overdue.toLocaleString('en-US', {minimumFractionDigits: 0})"/>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Attendance Pulse -->
+                            <div class="uni-attendance-pulse">
+                                <div class="pulse-title">
+                                    <span>Department Attendance Rate</span>
+                                    <span>Avg <t t-esc="state.data.kpis.avg_attendance"/>%</span>
+                                </div>
+                                <div class="pulse-bars">
+                                    <t t-foreach="state.data.departments" t-as="dept" t-key="dept.id">
+                                        <div t-if="dept.student_count > 0">
+                                            <div class="pulse-row">
+                                                <span><t t-esc="dept.name"/></span>
+                                                <span t-attf-class="fw-bold {{dept.avg_attendance >= 75 ? 'text-success' : 'text-danger'}}">
+                                                    <t t-esc="dept.avg_attendance"/>%
+                                                </span>
+                                            </div>
+                                            <div class="pulse-track">
+                                                <div t-attf-class="pulse-fill {{dept.avg_attendance >= 75 ? 'teal' : 'danger'}}"
+                                                     t-attf-style="width: {{dept.avg_attendance}}%"/>
+                                            </div>
+                                        </div>
+                                    </t>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. Lower Grid (Recent Roster & Alerts) -->
+                <div class="uni-lower-grid">
+                    <!-- Left: Recent Student Registrations Table -->
+                    <div class="uni-card">
+                        <div class="uni-card-header">
+                            <div>
+                                <h2>Student Academic &amp; Bursar Directory</h2>
+                                <p>Active semester student profiles with real-time academic standing</p>
+                            </div>
+                            <span class="link-view-all" t-on-click="openStudentsList">
+                                View Full Directory <i class="fa fa-arrow-right ms-1"/>
+                            </span>
+                        </div>
+
+                        <div class="uni-table-responsive">
+                            <table class="uni-table">
+                                <thead>
+                                    <tr>
+                                        <th>Student</th>
+                                        <th>Department</th>
+                                        <th>Program</th>
+                                        <th>CGPA</th>
+                                        <th>Attendance</th>
+                                        <th>Fee Standing</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="state.data.recent_students" t-as="student" t-key="student.id">
+                                        <tr class="uni-table-row" t-on-click="() => this.openStudent(student.id)">
+                                            <td>
+                                                <div class="student-cell">
+                                                    <div class="student-avatar-circle">
+                                                        <t t-esc="student.name.substring(0, 2).toUpperCase()"/>
+                                                    </div>
+                                                    <div class="student-meta">
+                                                        <span class="student-name"><t t-esc="student.name"/></span>
+                                                        <span class="student-code"><t t-esc="student.student_id"/></span>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td><t t-esc="student.department"/></td>
+                                            <td><span class="badge bg-light text-dark"><t t-esc="student.program"/></span></td>
+                                            <td>
+                                                <strong class="text-primary"><t t-esc="student.gpa"/></strong>
+                                            </td>
+                                            <td>
+                                                <span t-attf-class="fw-semibold {{student.is_low_attendance ? 'text-danger' : 'text-success'}}">
+                                                    <t t-esc="student.attendance_rate"/>
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span t-attf-class="chip {{student.fee_status}}">
+                                                    <t t-esc="student.fee_status.replace('_', ' ')"/>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Right: Actionable Academic & Defaulter Alerts -->
+                    <div class="uni-card">
+                        <div class="uni-card-header">
+                            <div>
+                                <h2>Urgent Academic &amp; Bursar Alerts</h2>
+                                <p>System-generated compliance notices requiring intervention</p>
+                            </div>
+                            <i class="fa fa-bell text-warning"/>
+                        </div>
+
+                        <div class="uni-alerts-stack">
+                            <t t-if="state.data.alerts.length === 0">
+                                <div class="text-center p-4 text-muted">
+                                    <i class="fa fa-check-circle text-success fa-2x mb-2"/>
+                                    <p class="mb-0">No urgent compliance alerts detected. All cohorts within bounds.</p>
+                                </div>
+                            </t>
+                            <t t-foreach="state.data.alerts" t-as="alert" t-key="alert.id">
+                                <div t-attf-class="uni-alert-item {{alert.type}}">
+                                    <div class="alert-content">
+                                        <span t-attf-class="alert-badge {{alert.type}}"><t t-esc="alert.category"/></span>
+                                        <h4 class="alert-title"><t t-esc="alert.title"/></h4>
+                                        <p class="alert-desc"><t t-esc="alert.description"/></p>
+                                    </div>
+                                    <button class="btn-alert-action"
+                                            t-on-click="() => this.openRecord(alert.action_model, alert.action_res_id)">
+                                        <t t-esc="alert.action_label"/>
+                                    </button>
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

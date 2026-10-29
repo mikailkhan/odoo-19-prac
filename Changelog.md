@@ -4,6 +4,48 @@ All notable changes to the UniSphere University ERP project will be documented i
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [Phase 8: Executive Academic Dashboard] - 2026-10-29
+
+### Added
+- Implemented `unisphere.dashboard` backend service model:
+  - Aggregates institutional analytics across terms, departments, courses, students, faculty, grades, attendance, and bursar ledger.
+  - Dynamically calculates:
+    - 4 Core KPIs: Active Enrollments, Faculty & Offerings, Average Attendance Rate, and Fee Realization Velocity.
+    - Department capacity breakdown with customized color tokens.
+    - Multi-segment fee velocity: Collected ($4,050.00 / 64.8%), Pending ($700.00 / 11.2%), Overdue ($1,500.00 / 24.0%).
+    - Actionable compliance alerts (attendance risks $< 75\%$ and overdue bursar invoices).
+- Implemented OWL 2 Client Action `unisphere_dashboard`:
+  - `static/src/dashboard/dashboard.js`: Interactive OWL component using `@odoo/owl` (`useState`, `onWillStart`) and Odoo services (`orm`, `action`, `notification`).
+  - Interactive academic term switcher dynamically reloading metrics on change.
+  - 1-click quick action headers: Add Student, New Section, Take Attendance (launching wizard modal), and Issue Challan.
+  - Clickable KPI cards and table rows drilling directly into Odoo backend list/form views.
+  - Alert action triggers opening specific student dossiers or overdue vouchers.
+- Created `static/src/dashboard/dashboard.scss`:
+  - Implemented the Stitch design tokens: Deep Navy `#172554`, Dark Primary `#000f3f`, Academic Blue `#2563EB`, Academic Teal `#0F766E`, Neutral Canvas `#F8FAFC`.
+  - Modern card hover elevations, multi-segment progress tracks, and clean data tables.
+- Created `static/src/dashboard/dashboard.xml`:
+  - Native OWL QWeb template with responsive grid layouts, status chips, avatar circles, and alert banners.
+- Created `views/dashboard_views.xml`:
+  - Registered client action `action_unisphere_dashboard` (`tag: unisphere_dashboard`).
+- Updated `views/menus.xml`:
+  - Configured root navigation menu `menu_unisphere_root` and `menu_unisphere_overview` to default directly to the Executive Dashboard.
+- Registered asset bundle `web.assets_backend` in `__manifest__.py` and bumped version to `19.0.8.0.0`.
+- Added automated unit test suite `tests/test_dashboard.py` (3 test cases validating data structure, metric ranges, department breakdown, fee velocity calculations, and term scoping).
+
+### Validated
+- Passed 37/37 automated unit tests across all 8 phases with 0 failures, 0 errors, and 0 warnings.
+- Verified live PostgreSQL 17 database metrics:
+  - Active Enrollments: 7
+  - Total Students: 4
+  - Faculty: 4 (100% active)
+  - Active Sections: 6
+  - Term CGPA Average: 3.65 / 4.00
+  - Institutional Attendance Rate: 75.0%
+  - Total Fee Invoiced: $6,250.00 | Realized: $4,050.00 (64.8%) | Receivables: $2,200.00
+  - Live alerts: Low attendance (Muhammad Usman 50.0%) and Overdue Tuition (Muhammad Usman $1,500.00).
+
+---
+
 ## [Phase 7: Scoped Fee Management] - 2026-10-29
 
 ### Added

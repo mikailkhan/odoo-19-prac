@@ -4,13 +4,20 @@
     <menuitem id="menu_unisphere_root"
               name="UniSphere"
               web_icon="unisphere_university,static/description/icon.png"
-              action="action_unisphere_course_section"
+              action="action_unisphere_dashboard"
               sequence="15"/>
 
     <!-- 1. Overview / Dashboard Category (Phase 8) -->
     <menuitem id="menu_unisphere_overview"
               name="Overview"
               parent="menu_unisphere_root"
+              action="action_unisphere_dashboard"
+              sequence="10"/>
+
+    <menuitem id="menu_unisphere_overview_dashboard"
+              name="Executive Dashboard"
+              parent="menu_unisphere_overview"
+              action="action_unisphere_dashboard"
               sequence="10"/>
 
     <!-- 2. Academic Operations Category -->
