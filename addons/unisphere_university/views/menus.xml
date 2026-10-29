@@ -105,6 +105,12 @@
               parent="menu_unisphere_root"
               sequence="60"/>
 
+    <menuitem id="menu_unisphere_fees"
+              name="Fee Challans &amp; Invoices"
+              parent="menu_unisphere_finance"
+              action="action_unisphere_fee"
+              sequence="10"/>
+
     <!-- 7. Configuration Category (Restricted to Admins) -->
     <menuitem id="menu_unisphere_config"
               name="Configuration"

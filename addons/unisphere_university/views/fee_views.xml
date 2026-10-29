@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Fee Challan List View -->
+    <record id="view_unisphere_fee_list" model="ir.ui.view">
+        <field name="name">unisphere.fee.list</field>
+        <field name="model">unisphere.fee</field>
+        <field name="arch" type="xml">
+            <list string="Bursar Fee Challans" sample="1">
+                <field name="challan_number"/>
+                <field name="student_id"/>
+                <field name="department_id"/>
+                <field name="term_id"/>
+                <field name="fee_type" widget="badge"/>
+                <field name="due_date"/>
+                <field name="amount_due" sum="Total Invoiced"/>
+                <field name="amount_paid" sum="Total Collected"/>
+                <field name="balance_due" sum="Outstanding Dues"
+                       decoration-danger="state == 'overdue'"
+                       decoration-warning="state == 'partial'"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'paid'"
+                       decoration-info="state == 'partial'"
+                       decoration-warning="state == 'posted'"
+                       decoration-danger="state == 'overdue'"
+                       decoration-muted="state in ('draft', 'cancelled')"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Fee Challan Form View -->
+    <record id="view_unisphere_fee_form" model="ir.ui.view">
+        <field name="name">unisphere.fee.form</field>
+        <field name="model">unisphere.fee</field>
+        <field name="arch" type="xml">
+            <form string="Student Fee Challan">
+                <header>
+                    <button name="action_register_payment" string="Register Payment" type="object"
+                            class="btn btn-primary" icon="fa-credit-card"
+                            invisible="state in ('paid', 'cancelled', 'draft')"/>
+                    <button name="action_post_challan" string="Issue Challan" type="object"
+                            class="oe_highlight" invisible="state != 'draft'"/>
+                    <button name="action_cancel" string="Cancel Challan" type="object"
+                            invisible="state in ('paid', 'cancelled')"/>
+                    <button name="action_reset_draft" string="Reset to Draft" type="object"
+                            invisible="state != 'cancelled'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,posted,partial,paid"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="challan_number" class="oe_edit_only" string="Voucher Reference #"/>
+                        <h1>
+                            <field name="challan_number" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Student &amp; Billing Scope">
+                            <field name="student_id" options="{'no_create': True}"/>
+                            <field name="department_id"/>
+                            <field name="term_id" options="{'no_create': True}"/>
+                            <field name="fee_type"/>
+                        </group>
+                        <group string="Schedule &amp; Deadlines">
+                            <field name="issue_date"/>
+                            <field name="due_date"/>
+                            <field name="active" widget="boolean_toggle"/>
+                        </group>
+                    </group>
+                    <group string="Financial Breakdown">
+                        <group>
+                            <field name="amount_due"/>
+                            <field name="amount_paid"/>
+                        </group>
+                        <group>
+                            <field name="balance_due"/>
+                        </group>
+                    </group>
+                    <notebook invisible="amount_paid == 0">
+                        <page string="Payment Receipt Information" name="payment_info">
+                            <group>
+                                <group string="Latest Transaction">
+                                    <field name="payment_method" readonly="1"/>
+                                    <field name="payment_reference" readonly="1"/>
+                                    <field name="payment_date" readonly="1"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Fee Pivot Analytics View -->
+    <record id="view_unisphere_fee_pivot" model="ir.ui.view">
+        <field name="name">unisphere.fee.pivot</field>
+        <field name="model">unisphere.fee</field>
+        <field name="arch" type="xml">
+            <pivot string="Fee Collection Analytics" sample="1">
+                <field name="department_id" type="row"/>
+                <field name="fee_type" type="row"/>
+                <field name="state" type="col"/>
+                <field name="amount_due" type="measure"/>
+                <field name="amount_paid" type="measure"/>
+                <field name="balance_due" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- Fee Search View -->
+    <record id="view_unisphere_fee_search" model="ir.ui.view">
+        <field name="name">unisphere.fee.search</field>
+        <field name="model">unisphere.fee</field>
+        <field name="arch" type="xml">
+            <search string="Search Fee Challans">
+                <field name="challan_number"/>
+                <field name="student_id"/>
+                <field name="term_id"/>
+                <field name="department_id"/>
+                <separator/>
+                <filter string="Dues Pending / Unpaid" name="filter_unpaid" domain="[('state', 'in', ('posted', 'partial', 'overdue'))]"/>
+                <filter string="Paid in Full" name="filter_paid" domain="[('state', '=', 'paid')]"/>
+                <filter string="Overdue Challans" name="filter_overdue" domain="[('state', '=', 'overdue')]"/>
+                <group>
+                    <filter string="Student" name="group_by_student" context="{'group_by': 'student_id'}"/>
+                    <filter string="Academic Term" name="group_by_term" context="{'group_by': 'term_id'}"/>
+                    <filter string="Department" name="group_by_department" context="{'group_by': 'department_id'}"/>
+                    <filter string="Fee Classification" name="group_by_type" context="{'group_by': 'fee_type'}"/>
+                    <filter string="Billing Status" name="group_by_state" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Window Action: Fees -->
+    <record id="action_unisphere_fee" model="ir.actions.act_window">
+        <field name="name">Student Fee Challans</field>
+        <field name="res_model">unisphere.fee</field>
+        <field name="view_mode">list,pivot,form</field>
+        <field name="search_view_id" ref="view_unisphere_fee_search"/>
+        <field name="context">{'search_default_filter_unpaid': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Issue a university fee challan!
+            </p>
+            <p>
+                Track tuition, laboratory, admission, and resource fees with real-time balance calculations.
+            </p>
+        </field>
+    </record>
+
+    <!-- Payment Wizard Form View -->
+    <record id="view_unisphere_fee_payment_wizard_form" model="ir.ui.view">
+        <field name="name">unisphere.fee.payment.wizard.form</field>
+        <field name="model">unisphere.fee.payment.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Register Fee Payment">
+                <sheet>
+                    <group>
+                        <group string="Voucher Details">
+                            <field name="challan_number" readonly="1"/>
+                            <field name="student_id" readonly="1"/>
+                            <field name="amount_due" readonly="1"/>
+                            <field name="amount_paid" readonly="1"/>
+                            <field name="balance_due" readonly="1"/>
+                        </group>
+                        <group string="Payment Collection Entry">
+                            <field name="payment_amount"/>
+                            <field name="payment_method"/>
+                            <field name="payment_reference" placeholder="e.g. HBL-DEP-09412 or 1Link Ref"/>
+                            <field name="payment_date"/>
+                            <field name="notes" placeholder="Optional cashier notes..."/>
+                        </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_confirm_payment" string="Confirm Payment" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

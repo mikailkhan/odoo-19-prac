@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'UniSphere — University Management System',
-    'version': '19.0.6.0.0',
+    'version': '19.0.7.0.0',
     'category': 'Education/University',
     'summary': 'Mini University Management System for Northstar University of Technology (NUT)',
     'description': """
@@ -32,6 +32,7 @@ Core Modules:
     'data': [
         'security/groups.xml',
         'security/ir.model.access.csv',
+        'data/fee_data.xml',
         'views/department_views.xml',
         'views/academic_term_views.xml',
         'views/course_views.xml',
@@ -41,6 +42,7 @@ Core Modules:
         'views/enrollment_views.xml',
         'views/attendance_views.xml',
         'views/grade_views.xml',
+        'views/fee_views.xml',
         'views/menus.xml',
         'data/demo_data.xml',
     ],

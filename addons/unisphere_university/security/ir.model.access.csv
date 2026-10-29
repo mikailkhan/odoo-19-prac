@@ -63,3 +63,12 @@ access_unisphere_grade_wizard_user,unisphere.grade.wizard.user,model_unisphere_g
 access_unisphere_grade_wizard_line_admin,unisphere.grade.wizard.line.admin,model_unisphere_grade_wizard_line,group_unisphere_admin,1,1,1,1
 access_unisphere_grade_wizard_line_faculty,unisphere.grade.wizard.line.faculty,model_unisphere_grade_wizard_line,group_unisphere_faculty,1,1,1,1
 access_unisphere_grade_wizard_line_user,unisphere.grade.wizard.line.user,model_unisphere_grade_wizard_line,base.group_user,1,1,1,1
+
+access_unisphere_fee_admin,unisphere.fee.admin,model_unisphere_fee,group_unisphere_admin,1,1,1,1
+access_unisphere_fee_faculty,unisphere.fee.faculty,model_unisphere_fee,group_unisphere_faculty,1,0,0,0
+access_unisphere_fee_user,unisphere.fee.user,model_unisphere_fee,base.group_user,1,0,0,0
+access_unisphere_fee_student,unisphere.fee.student,model_unisphere_fee,group_unisphere_student,1,0,0,0
+
+access_unisphere_fee_payment_wizard_admin,unisphere.fee.payment.wizard.admin,model_unisphere_fee_payment_wizard,group_unisphere_admin,1,1,1,1
+access_unisphere_fee_payment_wizard_faculty,unisphere.fee.payment.wizard.faculty,model_unisphere_fee_payment_wizard,group_unisphere_faculty,1,1,1,1
+access_unisphere_fee_payment_wizard_user,unisphere.fee.payment.wizard.user,model_unisphere_fee_payment_wizard,base.group_user,1,1,1,1

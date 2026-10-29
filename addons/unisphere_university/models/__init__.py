@@ -11,3 +11,5 @@ from . import attendance_wizard
 from . import assessment
 from . import grade
 from . import grade_wizard
+from . import fee
+from . import fee_payment_wizard

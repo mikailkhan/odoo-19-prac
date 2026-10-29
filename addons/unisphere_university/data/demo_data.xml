@@ -572,6 +572,84 @@
         <field name="remarks">Below passing threshold (50%). Academic advising recommended.</field>
         <field name="state">published</field>
     </record>
+
+    <!-- 10. Student Tuition & Fee Challans (Fall 2024 Billing) -->
+    <!-- Ayesha: Tuition Paid in full ($1,500 via Bank Transfer) -->
+    <record id="fee_ayesha_f24" model="unisphere.fee">
+        <field name="challan_number">NUT-2024-FEE-0001</field>
+        <field name="student_id" ref="student_ayesha"/>
+        <field name="term_id" ref="term_f24"/>
+        <field name="fee_type">tuition</field>
+        <field name="issue_date">2024-09-01</field>
+        <field name="due_date">2024-09-30</field>
+        <field name="amount_due">1500.0</field>
+        <field name="amount_paid">1500.0</field>
+        <field name="state">paid</field>
+        <field name="payment_method">bank_transfer</field>
+        <field name="payment_reference">HBL-DEP-2024-08912</field>
+        <field name="payment_date">2024-09-15</field>
+    </record>
+
+    <!-- Bilal: Partially Paid Tuition ($800 paid of $1,500, balance $700) -->
+    <record id="fee_bilal_f24" model="unisphere.fee">
+        <field name="challan_number">NUT-2024-FEE-0002</field>
+        <field name="student_id" ref="student_bilal"/>
+        <field name="term_id" ref="term_f24"/>
+        <field name="fee_type">tuition</field>
+        <field name="issue_date">2024-09-01</field>
+        <field name="due_date">2027-01-15</field>
+        <field name="amount_due">1500.0</field>
+        <field name="amount_paid">800.0</field>
+        <field name="state">partial</field>
+        <field name="payment_method">online</field>
+        <field name="payment_reference">STRIPE-CH-991204</field>
+        <field name="payment_date">2024-09-20</field>
+    </record>
+
+    <!-- Usman: Overdue Tuition ($0 paid of $1,500, due 2024-09-15) -->
+    <record id="fee_usman_f24" model="unisphere.fee">
+        <field name="challan_number">NUT-2024-FEE-0003</field>
+        <field name="student_id" ref="student_usman"/>
+        <field name="term_id" ref="term_f24"/>
+        <field name="fee_type">tuition</field>
+        <field name="issue_date">2024-09-01</field>
+        <field name="due_date">2024-09-15</field>
+        <field name="amount_due">1500.0</field>
+        <field name="amount_paid">0.0</field>
+        <field name="state">posted</field>
+    </record>
+
+    <!-- Zainab: 100% Merit Scholarship ($1,500 settled via scholarship waiver) -->
+    <record id="fee_zainab_f24" model="unisphere.fee">
+        <field name="challan_number">NUT-2024-FEE-0004</field>
+        <field name="student_id" ref="student_zainab"/>
+        <field name="term_id" ref="term_f24"/>
+        <field name="fee_type">tuition</field>
+        <field name="issue_date">2024-09-01</field>
+        <field name="due_date">2024-09-30</field>
+        <field name="amount_due">1500.0</field>
+        <field name="amount_paid">1500.0</field>
+        <field name="state">paid</field>
+        <field name="payment_method">scholarship</field>
+        <field name="payment_reference">NUT-MERIT-SCHOLARSHIP-2024</field>
+        <field name="payment_date">2024-09-02</field>
+    </record>
+
+    <!-- Ayesha: Laboratory & Technology Fee ($250 paid via cash counter) -->
+    <record id="fee_ayesha_lab_f24" model="unisphere.fee">
+        <field name="challan_number">NUT-2024-FEE-0005</field>
+        <field name="student_id" ref="student_ayesha"/>
+        <field name="term_id" ref="term_f24"/>
+        <field name="fee_type">lab</field>
+        <field name="issue_date">2024-09-05</field>
+        <field name="due_date">2024-09-30</field>
+        <field name="amount_due">250.0</field>
+        <field name="amount_paid">250.0</field>
+        <field name="state">paid</field>
+        <field name="payment_method">cash</field>
+        <field name="payment_reference">BURSAR-RCP-0118</field>
+        <field name="payment_date">2024-09-10</field>
+    </record>
 </odoo>
 
 

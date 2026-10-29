@@ -163,6 +163,35 @@ class UnisphereStudent(models.Model):
         store=True,
         help='Total credit hours completed with a passing grade.'
     )
+    fee_ids = fields.One2many(
+        'unisphere.fee',
+        'student_id',
+        string='Fee Challans'
+    )
+    total_invoiced = fields.Float(
+        string='Total Invoiced ($)',
+        compute='_compute_fee_metrics',
+        store=True,
+        digits=(10, 2)
+    )
+    total_paid = fields.Float(
+        string='Total Paid ($)',
+        compute='_compute_fee_metrics',
+        store=True,
+        digits=(10, 2)
+    )
+    balance_due = fields.Float(
+        string='Outstanding Dues ($)',
+        compute='_compute_fee_metrics',
+        store=True,
+        digits=(10, 2)
+    )
+    fee_status = fields.Selection([
+        ('clear', 'Fees Cleared'),
+        ('dues_pending', 'Dues Pending'),
+        ('overdue', 'Overdue Dues')
+    ], string='Bursar Status', compute='_compute_fee_metrics', store=True, default='clear')
+
 
     _student_id_unique = models.Constraint(
         'UNIQUE(student_id)',
@@ -257,6 +286,36 @@ class UnisphereStudent(models.Model):
             'name': _('Student Grades - %s') % self.name,
             'type': 'ir.actions.act_window',
             'res_model': 'unisphere.grade',
+            'view_mode': 'list,form',
+            'domain': [('student_id', '=', self.id)],
+            'context': {'default_student_id': self.id},
+        }
+
+    @api.depends('fee_ids.amount_due', 'fee_ids.amount_paid', 'fee_ids.state')
+    def _compute_fee_metrics(self):
+        for record in self:
+            active_fees = record.fee_ids.filtered(lambda f: f.state != 'cancelled')
+            total_inv = sum(f.amount_due for f in active_fees)
+            total_pd = sum(f.amount_paid for f in active_fees)
+            bal = max(0.0, total_inv - total_pd)
+            record.total_invoiced = total_inv
+            record.total_paid = total_pd
+            record.balance_due = bal
+
+            if any(f.state == 'overdue' for f in active_fees):
+                record.fee_status = 'overdue'
+            elif bal > 0:
+                record.fee_status = 'dues_pending'
+            else:
+                record.fee_status = 'clear'
+
+    def action_view_fees(self):
+        """Smart button action to view all fee challans for this student"""
+        self.ensure_one()
+        return {
+            'name': _('Bursar Ledger - %s') % self.name,
+            'type': 'ir.actions.act_window',
+            'res_model': 'unisphere.fee',
             'view_mode': 'list,form',
             'domain': [('student_id', '=', self.id)],
             'context': {'default_student_id': self.id},

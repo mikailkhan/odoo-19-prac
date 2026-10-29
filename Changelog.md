@@ -4,6 +4,52 @@ All notable changes to the UniSphere University ERP project will be documented i
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [Phase 7: Scoped Fee Management] - 2026-10-29
+
+### Added
+- Implemented `unisphere.fee` student fee & challan ledger model:
+  - Sequence generator: `ir.sequence` (`NUT-FEE-%(year)s-####`) generating unique institutional voucher IDs.
+  - Core classifications: Tuition (per term), Admission, Lab & Tech, Library, Exam, Hostel, and Miscellaneous.
+  - Financial calculations: `amount_due`, `amount_paid`, and computed real-time `balance_due`.
+  - Lifecycle state machine: `draft`, `posted` (issued/unpaid), `partial` (partially paid), `paid` (settled in full), `overdue` (unpaid past due date), and `cancelled`.
+  - Payment tracking: `payment_method` (`bank_transfer`, `cash`, `online`, `scholarship`), `payment_reference`, and `payment_date`.
+  - Constraints: rejects negative amounts, overpayments exceeding total balance due, and due dates earlier than issue dates.
+- Implemented `unisphere.fee.payment.wizard`:
+  - 1-click modal payment registration dialog allowing bursars to record full or partial payments.
+  - Automatically updates voucher balance, updates state to `partial` or `paid`, and writes audit receipt notifications directly into the fee chatter log.
+  - Validation: rejects zero/negative payment amounts and payments exceeding current balance due.
+- Enhanced `unisphere.student`:
+  - Financial rollups: `fee_ids` one-to-many link, `total_invoiced`, `total_paid`, and `balance_due`.
+  - Computed institutional financial status `fee_status` with dynamic badges:
+    - `clear` (all dues paid, Green)
+    - `dues_pending` (outstanding balance within due date, Orange)
+    - `overdue` (unpaid dues past due date, Red)
+  - Bursar smart button **Fee Dues** on student form with real-time balance display and 1-click navigation to the student's fee ledger.
+  - Notebook tab **Bursar Ledger** embedded directly in the student profile form.
+- Created declarative XML views:
+  - List View with sum aggregations for Total Invoiced, Total Collected, and Outstanding Dues.
+  - Form View with statusbar, payment action header button, and chatter.
+  - Pivot Matrix View for financial analysis across departments, academic terms, and fee types.
+  - Search View with quick filters (`filter_unpaid`, `filter_paid`, `filter_overdue`) and grouping.
+  - Modal form view for `unisphere.fee.payment.wizard`.
+- Added navigation sub-menu under **Bursar & Fees**: **Fee Challans & Invoices**.
+- Loaded realistic Fall 2024 demo fee challans:
+  - Ayesha Malik: $1,500 Tuition (Paid in full via Bank Transfer) + $250 Lab Fee (Paid in full via Cash) $\rightarrow$ **Clear** ($0 balance).
+  - Bilal Ahmed Khan: $1,500 Tuition ($800 paid online, $700 pending) $\rightarrow$ **Dues Pending** ($700 balance).
+  - Muhammad Usman: $1,500 Tuition ($0 paid, due 2024-09-15) $\rightarrow$ **Overdue** ($1,500 balance).
+  - Zainab Fatima: $1,500 Tuition (100% Merit Scholarship waiver) $\rightarrow$ **Clear** ($0 balance).
+- Created automated test suite (`tests/test_fees.py`) with 9 unit tests covering sequence generation, balance math, workflow transitions, overdue date triggers, negative/excess validation, payment wizard flow, and student profile rollups.
+
+### Validated
+- Passed 34/34 automated unit tests across all 7 phases with 0 failures, 0 errors, and 0 warnings.
+- Verified live PostgreSQL 17 database metrics:
+  - Total institutional billings: $6,250.00
+  - Total collections & waivers: $4,050.00
+  - Total outstanding receivables: $2,200.00 (Bilal $700 + Usman $1,500)
+- Hot-reloaded container services and confirmed clean web client UI state.
+
+---
+
 ## [Phase 6: Continuous Assessments & Gradebook Engine] - 2026-10-29
 
 ### Added
