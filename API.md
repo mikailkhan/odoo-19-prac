@@ -10,9 +10,9 @@ Instead, UniSphere communicates via two native Odoo integration layers:
 
 ---
 
-## 2. Planned Student Portal Routes (Phase 9)
+## 2. Implemented Student Portal Routes (Phase 9)
 
-All student portal endpoints require authenticated session cookies associated with a user belonging to `unisphere_university.group_unisphere_student`.
+All student portal endpoints require authenticated session cookies associated with a user belonging to `unisphere_university.group_unisphere_student` (or administrative preview).
 
 ### A. Portal Home / Dashboard
 - **Route:** `GET /my/unisphere`

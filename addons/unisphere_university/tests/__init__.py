@@ -6,3 +6,4 @@ from . import test_attendance
 from . import test_assessments_grades
 from . import test_fees
 from . import test_dashboard
+from . import test_portal

@@ -251,8 +251,17 @@
         <field name="phone">+92 300 5550142</field>
         <field name="is_company">False</field>
     </record>
+    <record id="user_student_ayesha" model="res.users">
+        <field name="name">Ayesha Malik</field>
+        <field name="login">student.ayesha@northstar.edu</field>
+        <field name="password">student123</field>
+        <field name="email">ayesha.malik@student.northstar.edu</field>
+        <field name="partner_id" ref="partner_student_ayesha"/>
+        <field name="group_ids" eval="[(6, 0, [ref('base.group_portal'), ref('unisphere_university.group_unisphere_student')])]"/>
+    </record>
     <record id="student_ayesha" model="unisphere.student">
         <field name="partner_id" ref="partner_student_ayesha"/>
+        <field name="user_id" ref="user_student_ayesha"/>
         <field name="student_id">NUT-2024-CS-0142</field>
         <field name="department_id" ref="dept_cs"/>
         <field name="program">bs_cs</field>
@@ -305,8 +314,17 @@
         <field name="phone">+92 345 5550105</field>
         <field name="is_company">False</field>
     </record>
+    <record id="user_student_usman" model="res.users">
+        <field name="name">Muhammad Usman</field>
+        <field name="login">student.usman@northstar.edu</field>
+        <field name="password">student123</field>
+        <field name="email">m.usman@student.northstar.edu</field>
+        <field name="partner_id" ref="partner_student_usman"/>
+        <field name="group_ids" eval="[(6, 0, [ref('base.group_portal'), ref('unisphere_university.group_unisphere_student')])]"/>
+    </record>
     <record id="student_usman" model="unisphere.student">
         <field name="partner_id" ref="partner_student_usman"/>
+        <field name="user_id" ref="user_student_usman"/>
         <field name="student_id">NUT-2024-AI-0105</field>
         <field name="department_id" ref="dept_ai"/>
         <field name="program">bs_ai</field>

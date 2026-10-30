@@ -4,6 +4,53 @@ All notable changes to the UniSphere University ERP project will be documented i
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [Phase 9: Dedicated Student Web Portal] - 2026-10-30
+
+### Added
+- **Row-Level Security Architecture (`security/record_rules.xml`)**:
+  - Implemented multi-tenant student row-level isolation via `ir.rule` for `unisphere_university.group_unisphere_student`:
+    - `rule_unisphere_student_portal`: Students can only read their own student profile (`partner_id = user.partner_id.id`).
+    - `rule_unisphere_enrollment_portal`: Students can only read their own course enrollments (`student_id.partner_id = user.partner_id.id`).
+    - `rule_unisphere_attendance_portal`: Students can only view their own attendance records.
+    - `rule_unisphere_grade_portal`: Continuous privacy barrier — students can only view their own grades for published assessments (`assessment_id.state = 'published'`), preventing grade leaks before official publication.
+    - `rule_unisphere_fee_portal`: Students can only view their own fee challans and payment records.
+  - Added faculty section-scoped access rules for attendance and grading (`group_unisphere_faculty`).
+  - Added unrestricted administrative bypass rules (`group_unisphere_admin`).
+- **Student User Provisioning (`data/demo_data.xml`)**:
+  - Configured demo portal user accounts linked to student profiles:
+    - `student.ayesha@northstar.edu` / `student123` (Ayesha Malik, `NUT-2024-CS-0142` — Dean's Honor Roll, 4.00 CGPA, clear dues).
+    - `student.usman@northstar.edu` / `student123` (Muhammad Usman, `NUT-2024-AI-0105` — Attendance warning 50.0% < 75%, $1,500 overdue tuition).
+  - Assigned `base.group_portal` and `unisphere_university.group_unisphere_student` via Odoo 19 `group_ids` M2M field.
+- **Portal Controllers (`controllers/__init__.py`, `controllers/portal.py`)**:
+  - Created `UniSphereStudentPortal` extending `portal.CustomerPortal`:
+    - `/my/unisphere`: Student academic overview dashboard with CGPA card, attendance rate, bursar balance, active semester enrollments, and recent published assessment results.
+    - `/my/unisphere/courses/<int:section_id>`: Detailed course view with course banner, class-by-class attendance history, and published assessment gradebook.
+    - Strict 403 Forbidden protection: prevents students from inspecting sections they are not enrolled in.
+    - `/my/unisphere/fees`: Institutional fee ledger with total invoiced, paid, balance due, bank deposit instructions (Allied Bank / HBL, IBAN, challan reference), and individual fee voucher table.
+    - Home portal counter injection (`_prepare_home_portal_values`) for active course enrollments and fee vouchers.
+- **Stitch-Themed QWeb Portal Templates (`views/portal_templates.xml`)**:
+  - Injected UniSphere navigation cards into native `/my` portal with custom vector SVG artwork (`portal-academic.svg`, `portal-fees.svg`).
+  - Breadcrumb navigation hooks (`portal_my_home_menu_unisphere`) extending `portal.portal_breadcrumbs`.
+  - Responsive Stitch academic design system: Deep Navy (`#000f3f`, `#172554`), Academic Blue (`#2563EB`), Academic Teal (`#0F766E`), status chips, and interactive cards.
+  - Fallback view (`portal_no_student_profile`) for portal users without a linked university student registration.
+- **Automated Portal Security Test Suite (`tests/test_portal.py`)**:
+  - `test_01_student_portal_row_level_isolation`: Validates student profile and fee challan multi-tenant isolation.
+  - `test_02_grade_publication_security_rule`: Validates that draft assessment grades are invisible to students until published, and isolates grades between students.
+  - `test_03_course_enrollment_boundary`: Validates enrollment boundary logic.
+- **Manifest Updates (`__manifest__.py`)**:
+  - Added `portal` dependency.
+  - Registered `security/record_rules.xml` and `views/portal_templates.xml`.
+  - Bumped version to `19.0.9.0.0`.
+
+### Validated
+- Passed 40/40 automated unit tests with 0 failures, 0 errors across the entire module.
+- End-to-end browser and script verification:
+  - Ayesha Malik: Authenticated session confirmed 4.00 CGPA, "Dean's Honor" badge, 100% attendance, clear fees ($0.00 balance), course rosters, and published grades.
+  - Muhammad Usman: Authenticated session confirmed 50.0% attendance warning ("Below 75%"), "Dues Pending" badge ($1,500.00), overdue challan statement, and bank deposit instructions.
+  - Security Boundary: Cross-student access attempt to un-enrolled course section returned HTTP 403 Forbidden.
+
+---
+
 ## [Phase 8: Executive Academic Dashboard] - 2026-10-29
 
 ### Added

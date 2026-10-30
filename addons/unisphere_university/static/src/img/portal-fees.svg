@@ -1,0 +1,12 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="32" cy="32" r="30" fill="#ECFDF5" stroke="#D1FAE5" stroke-width="2"/>
+  <!-- Invoice / Challan Base -->
+  <rect x="20" y="16" width="24" height="32" rx="3" fill="#FFFFFF" stroke="#0F766E" stroke-width="2"/>
+  <!-- Bill Lines -->
+  <line x1="25" y1="23" x2="39" y2="23" stroke="#0F766E" stroke-width="2" stroke-linecap="round"/>
+  <line x1="25" y1="28" x2="35" y2="28" stroke="#10B981" stroke-width="2" stroke-linecap="round"/>
+  <line x1="25" y1="33" x2="37" y2="33" stroke="#94A3B8" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- Currency Coin Seal -->
+  <circle cx="32" cy="40" r="5" fill="#10B981"/>
+  <text x="32" y="43" font-size="7" font-weight="bold" fill="#FFFFFF" text-anchor="middle" font-family="sans-serif">$</text>
+</svg>

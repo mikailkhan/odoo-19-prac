@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- ========================================== -->
+        <!-- STUDENT PORTAL ROW-LEVEL RECORD RULES      -->
+        <!-- ========================================== -->
+
+        <!-- 1. Student Profile: Student Can Only View Their Own Profile -->
+        <record id="rule_unisphere_student_portal" model="ir.rule">
+            <field name="name">UniSphere Student: View Own Profile</field>
+            <field name="model_id" ref="model_unisphere_student"/>
+            <field name="domain_force">[('partner_id', '=', user.partner_id.id)]</field>
+            <field name="groups" eval="[(4, ref('group_unisphere_student'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <!-- 2. Course Enrollments: Student Can Only View Their Own Enrollments -->
+        <record id="rule_unisphere_enrollment_portal" model="ir.rule">
+            <field name="name">UniSphere Student: View Own Enrollments</field>
+            <field name="model_id" ref="model_unisphere_enrollment"/>
+            <field name="domain_force">[('student_id.partner_id', '=', user.partner_id.id)]</field>
+            <field name="groups" eval="[(4, ref('group_unisphere_student'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <!-- 3. Attendance: Student Can Only View Their Own Attendance -->
+        <record id="rule_unisphere_attendance_portal" model="ir.rule">
+            <field name="name">UniSphere Student: View Own Attendance</field>
+            <field name="model_id" ref="model_unisphere_attendance"/>
+            <field name="domain_force">[('student_id.partner_id', '=', user.partner_id.id)]</field>
+            <field name="groups" eval="[(4, ref('group_unisphere_student'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <!-- 4. Grades: Student Can Only View Their Own Grades for Published Assessments -->
+        <record id="rule_unisphere_grade_portal" model="ir.rule">
+            <field name="name">UniSphere Student: View Own Published Grades</field>
+            <field name="model_id" ref="model_unisphere_grade"/>
+            <field name="domain_force">[('student_id.partner_id', '=', user.partner_id.id), ('assessment_id.state', '=', 'published')]</field>
+            <field name="groups" eval="[(4, ref('group_unisphere_student'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <!-- 5. Fees: Student Can Only View Their Own Fee Challans -->
+        <record id="rule_unisphere_fee_portal" model="ir.rule">
+            <field name="name">UniSphere Student: View Own Fee Challans</field>
+            <field name="model_id" ref="model_unisphere_fee"/>
+            <field name="domain_force">[('student_id.partner_id', '=', user.partner_id.id)]</field>
+            <field name="groups" eval="[(4, ref('group_unisphere_student'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <!-- ========================================== -->
+        <!-- FACULTY ROW-LEVEL RECORD RULES             -->
+        <!-- ========================================== -->
+
+        <!-- 6. Faculty: Attendance for Assigned Sections -->
+        <record id="rule_unisphere_attendance_faculty" model="ir.rule">
+            <field name="name">UniSphere Faculty: Attendance for Assigned Sections</field>
+            <field name="model_id" ref="model_unisphere_attendance"/>
+            <field name="domain_force">[('section_id.instructor_id.partner_id', '=', user.partner_id.id)]</field>
+            <field name="groups" eval="[(4, ref('group_unisphere_faculty'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <!-- 7. Faculty: Grades for Assigned Sections -->
+        <record id="rule_unisphere_grade_faculty" model="ir.rule">
+            <field name="name">UniSphere Faculty: Grades for Assigned Sections</field>
+            <field name="model_id" ref="model_unisphere_grade"/>
+            <field name="domain_force">[('assessment_id.section_id.instructor_id.partner_id', '=', user.partner_id.id)]</field>
+            <field name="groups" eval="[(4, ref('group_unisphere_faculty'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <!-- ========================================== -->
+        <!-- ADMINISTRATOR UNRESTRICTED BYPASS RULES    -->
+        <!-- ========================================== -->
+
+        <record id="rule_unisphere_student_admin" model="ir.rule">
+            <field name="name">UniSphere Admin: Unrestricted Students</field>
+            <field name="model_id" ref="model_unisphere_student"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_unisphere_admin'))]"/>
+        </record>
+
+        <record id="rule_unisphere_enrollment_admin" model="ir.rule">
+            <field name="name">UniSphere Admin: Unrestricted Enrollments</field>
+            <field name="model_id" ref="model_unisphere_enrollment"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_unisphere_admin'))]"/>
+        </record>
+
+        <record id="rule_unisphere_attendance_admin" model="ir.rule">
+            <field name="name">UniSphere Admin: Unrestricted Attendance</field>
+            <field name="model_id" ref="model_unisphere_attendance"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_unisphere_admin'))]"/>
+        </record>
+
+        <record id="rule_unisphere_grade_admin" model="ir.rule">
+            <field name="name">UniSphere Admin: Unrestricted Grades</field>
+            <field name="model_id" ref="model_unisphere_grade"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_unisphere_admin'))]"/>
+        </record>
+
+        <record id="rule_unisphere_fee_admin" model="ir.rule">
+            <field name="name">UniSphere Admin: Unrestricted Fees</field>
+            <field name="model_id" ref="model_unisphere_fee"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_unisphere_admin'))]"/>
+        </record>
+    </data>
+</odoo>

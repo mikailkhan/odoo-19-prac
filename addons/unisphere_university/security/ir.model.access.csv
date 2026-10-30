@@ -2,6 +2,8 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_unisphere_department_admin,unisphere.department.admin,model_unisphere_department,group_unisphere_admin,1,1,1,1
 access_unisphere_department_faculty,unisphere.department.faculty,model_unisphere_department,group_unisphere_faculty,1,0,0,0
 access_unisphere_department_user,unisphere.department.user,model_unisphere_department,base.group_user,1,0,0,0
+access_unisphere_department_student,unisphere.department.student,model_unisphere_department,group_unisphere_student,1,0,0,0
+
 
 access_unisphere_academic_term_admin,unisphere.academic.term.admin,model_unisphere_academic_term,group_unisphere_admin,1,1,1,1
 access_unisphere_academic_term_faculty,unisphere.academic.term.faculty,model_unisphere_academic_term,group_unisphere_faculty,1,0,0,0
