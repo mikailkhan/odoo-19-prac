@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!-- 0. Institution Branding -->
+    <record id="base.main_company" model="res.company">
+        <field name="name">Northstar University of Technology</field>
+    </record>
+
     <!-- 1. Academic Departments -->
     <record id="dept_cs" model="unisphere.department">
         <field name="name">Department of Computer Science</field>

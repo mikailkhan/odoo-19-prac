@@ -40,13 +40,19 @@ docker compose ps
 ```
 
 The system will be accessible at:
-- **ERP Backend & Portal:** [http://127.0.0.1:8069](http://127.0.0.1:8069)
+- **University Institutional Homepage:** [http://127.0.0.1:8069](http://127.0.0.1:8069)
+- **Student Academic Portal:** [http://127.0.0.1:8069/my/unisphere](http://127.0.0.1:8069/my/unisphere)
+- **Administrative ERP Backend:** [http://127.0.0.1:8069/odoo](http://127.0.0.1:8069/odoo)
 - **Target Database:** `nutech`
 
-### Default Administrative Credentials
-- **Database:** `nutech`
-- **Email / Login:** `your-email@example.com`
-- **Master Admin Password:** `your-master-password` (the `admin_passwd` value in your local `odoo.conf`)
+### 🎭 Instant 1-Click Demo Personas
+Visitors to the homepage ([http://127.0.0.1:8069](http://127.0.0.1:8069)) or login page can use the **1-Click Demo Login** buttons:
+
+| Persona | Role | Email | Password | Showcase Focus |
+| :--- | :--- | :--- | :--- | :--- |
+| **Ayesha Malik** | Honor Student | `student.ayesha@northstar.edu` | `student123` | 4.00 CGPA, Dean's List, 100% Attendance, Clear Balance |
+| **Muhammad Usman** | At-Risk Student | `student.usman@northstar.edu` | `student123` | 50.0% Attendance Warning (&lt;75%), $1,500 Overdue Tuition Challan |
+| **Mikail Khan** | Super Admin | `khanmikail1002@gmail.com` | `admin123` | Executive OWL Dashboard, Registrar, Dean, & Bursar Access |
 
 ---
 

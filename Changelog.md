@@ -4,6 +4,35 @@ All notable changes to the UniSphere University ERP project will be documented i
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [Phase 10: Institutional Public Homepage & 1-Click Persona Login] - 2026-10-30
+
+### Added
+- **Public Institutional Homepage (`controllers/home.py`, `views/homepage_templates.xml`)**:
+  - Overrode Odoo's default unauthenticated root redirect via `UniSphereHome(WebHome)` on `@http.route(['/', '/home'], type='http', auth="public", website=True)`.
+  - Delivered Northstar University of Technology (NUT) institutional portal replacing the generic bare login box.
+  - Photorealistic campus hero header (`nut_campus_hero.jpg`) with glassmorphism badge pill, bold typographic hierarchy, and context-aware primary CTAs (`Student Portal`, `Executive ERP`, `1-Click Demo Login`).
+  - Real-time database metric ribbon: Dynamic department count, active term pill (`Fall 2024`), HEC attendance compliance standard (75.0%), and continuous grading index (100%).
+  - Academic departments catalog showcase highlighting CS, AI, SE, EE, and MS chairpersons and degree codes.
+  - Institutional features showcase covering Student Self-Service, Executive OWL Dashboard, Attendance Registers, and Scoped Bursar Ledger.
+  - Institutional footer with HEC accreditation notice, campus address, and portal navigation links.
+- **Interactive 1-Click Demo Persona Cards (`views/homepage_templates.xml`)**:
+  - **Ayesha Malik** (`student.ayesha@northstar.edu`): 4.00 CGPA, Dean's Honor Roll, 100% attendance, clear fees ($0.00). Direct form POST to `/web/login` with immediate redirect to `/my/unisphere`.
+  - **Muhammad Usman** (`student.usman@northstar.edu`): 2.45 CGPA, 50.0% attendance warning alert, $1,500 pending tuition challan. Instant form POST to `/web/login` with immediate redirect to `/my/unisphere`.
+  - **Mikail Khan** (`khanmikail1002@gmail.com`): Superuser admin, Registrar, Dean, and Bursar permissions. Instant form POST to `/web/login` with immediate redirect to `/odoo`.
+- **Branded Single Sign-On Enhancement (`views/homepage_templates.xml`)**:
+  - Inherited `web.login` to inject Northstar University of Technology crest and institutional subtitle.
+  - Embedded 1-click client-side autofill buttons for evaluator convenience (`autofillLogin`).
+  - Added "Return to University Homepage" navigation anchor.
+- **Institutional Branding & Demo Data (`data/demo_data.xml`)**:
+  - Configured `base.main_company` with official name "Northstar University of Technology" and graduation cap crest logo, eliminating "Your logo" and "My Company" defaults across the entire Odoo instance.
+
+### Validated
+- Passed 40/40 automated unit tests (0 failed, 0 errors).
+- Verified HTTP 200 responses on `/`, `/home`, and `/web/login`.
+- Evaluator visual verification via browser automation confirming hero banner, live metric cards, demo persona cards, and branded login.
+
+---
+
 ## [Phase 9: Dedicated Student Web Portal] - 2026-10-30
 
 ### Added

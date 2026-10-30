@@ -1,0 +1,738 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ============================================================= -->
+    <!-- 1. NORTHSTAR UNIVERSITY OF TECHNOLOGY — PUBLIC HOMEPAGE       -->
+    <!-- ============================================================= -->
+    <template id="homepage" name="Northstar University of Technology Homepage">
+        <t t-call="portal.frontend_layout">
+            <t t-set="title">Northstar University of Technology | UniSphere Academic ERP</t>
+
+            <style>
+                :root {
+                    --nut-navy: #000f3f;
+                    --nut-deep-navy: #172554;
+                    --nut-blue: #2563eb;
+                    --nut-blue-light: #3b82f6;
+                    --nut-teal: #0f766e;
+                    --nut-teal-light: #14b8a6;
+                    --nut-slate: #0f172a;
+                    --nut-muted: #64748b;
+                    --nut-border: #e2e8f0;
+                    --nut-card-bg: #ffffff;
+                }
+
+                .nut-hero {
+                    position: relative;
+                    min-height: 580px;
+                    background: linear-gradient(135deg, rgba(0, 15, 63, 0.92) 0%, rgba(23, 37, 84, 0.84) 60%, rgba(15, 118, 110, 0.78) 100%),
+                                url('/unisphere_university/static/src/img/nut_campus_hero.jpg') center/cover no-repeat;
+                    display: flex;
+                    align-items: center;
+                    color: #ffffff;
+                    padding: 5rem 0 4rem;
+                    overflow: hidden;
+                }
+
+                .nut-hero::before {
+                    content: '';
+                    position: absolute;
+                    inset: 0;
+                    background: radial-gradient(circle at 80% 20%, rgba(37, 99, 235, 0.28) 0%, transparent 60%);
+                    pointer-events: none;
+                }
+
+                .nut-badge-pill {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    background: rgba(255, 255, 255, 0.12);
+                    backdrop-filter: blur(8px);
+                    border: 1px solid rgba(255, 255, 255, 0.25);
+                    padding: 0.4rem 1rem;
+                    border-radius: 9999px;
+                    font-size: 0.85rem;
+                    font-weight: 600;
+                    letter-spacing: 0.04em;
+                    color: #e0e7ff;
+                    margin-bottom: 1.5rem;
+                }
+
+                .nut-hero-title {
+                    font-size: clamp(2.2rem, 4.5vw, 3.4rem);
+                    font-weight: 800;
+                    line-height: 1.15;
+                    letter-spacing: -0.02em;
+                    color: #ffffff;
+                    margin-bottom: 1.25rem;
+                }
+
+                .nut-hero-desc {
+                    font-size: clamp(1.05rem, 1.5vw, 1.25rem);
+                    line-height: 1.6;
+                    color: #cbd5e1;
+                    max-width: 680px;
+                    margin-bottom: 2.25rem;
+                }
+
+                .nut-btn-primary {
+                    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+                    color: #ffffff;
+                    border: none;
+                    padding: 0.85rem 1.75rem;
+                    border-radius: 8px;
+                    font-weight: 600;
+                    font-size: 1rem;
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+                    transition: all 0.2s ease;
+                    text-decoration: none;
+                }
+                .nut-btn-primary:hover {
+                    background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+                    color: #ffffff;
+                    transform: translateY(-2px);
+                    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.45);
+                }
+
+                .nut-btn-outline {
+                    background: rgba(255, 255, 255, 0.08);
+                    backdrop-filter: blur(8px);
+                    color: #ffffff;
+                    border: 1px solid rgba(255, 255, 255, 0.35);
+                    padding: 0.85rem 1.75rem;
+                    border-radius: 8px;
+                    font-weight: 600;
+                    font-size: 1rem;
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    transition: all 0.2s ease;
+                    text-decoration: none;
+                }
+                .nut-btn-outline:hover {
+                    background: rgba(255, 255, 255, 0.2);
+                    border-color: #ffffff;
+                    color: #ffffff;
+                    transform: translateY(-2px);
+                }
+
+                .nut-btn-accent {
+                    background: linear-gradient(135deg, #0f766e 0%, #0d9488 100%);
+                    color: #ffffff;
+                    border: none;
+                    padding: 0.85rem 1.75rem;
+                    border-radius: 8px;
+                    font-weight: 600;
+                    font-size: 1rem;
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    box-shadow: 0 4px 14px rgba(15, 118, 110, 0.35);
+                    transition: all 0.2s ease;
+                    text-decoration: none;
+                }
+                .nut-btn-accent:hover {
+                    background: linear-gradient(135deg, #0d9488 0%, #047857 100%);
+                    color: #ffffff;
+                    transform: translateY(-2px);
+                }
+
+                /* Metric Ribbon */
+                .nut-metric-ribbon {
+                    margin-top: -3rem;
+                    position: relative;
+                    z-index: 10;
+                }
+                .nut-metric-card {
+                    background: #ffffff;
+                    border: 1px solid var(--nut-border);
+                    border-radius: 12px;
+                    padding: 1.5rem;
+                    box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08);
+                    text-align: center;
+                    transition: transform 0.2s ease, box-shadow 0.2s ease;
+                    height: 100%;
+                }
+                .nut-metric-card:hover {
+                    transform: translateY(-3px);
+                    box-shadow: 0 16px 30px -5px rgba(15, 23, 42, 0.12);
+                }
+                .nut-metric-val {
+                    font-size: 2rem;
+                    font-weight: 800;
+                    color: var(--nut-deep-navy);
+                    line-height: 1;
+                    margin-bottom: 0.35rem;
+                }
+                .nut-metric-label {
+                    font-size: 0.82rem;
+                    font-weight: 600;
+                    color: var(--nut-muted);
+                    text-transform: uppercase;
+                    letter-spacing: 0.05em;
+                }
+
+                /* Persona Demo Cards */
+                .nut-persona-card {
+                    background: #ffffff;
+                    border: 1px solid var(--nut-border);
+                    border-radius: 14px;
+                    padding: 1.75rem;
+                    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05);
+                    transition: all 0.25s ease;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-between;
+                    height: 100%;
+                    position: relative;
+                    overflow: hidden;
+                }
+                .nut-persona-card:hover {
+                    transform: translateY(-4px);
+                    border-color: #93c5fd;
+                    box-shadow: 0 16px 32px -8px rgba(37, 99, 235, 0.15);
+                }
+                .nut-persona-card.featured {
+                    border-color: #60a5fa;
+                    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+                }
+                .nut-persona-card.featured::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    height: 4px;
+                    background: linear-gradient(90deg, #2563eb, #0f766e);
+                }
+
+                .nut-persona-avatar {
+                    width: 56px;
+                    height: 56px;
+                    border-radius: 12px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 1.5rem;
+                    font-weight: 700;
+                    color: #ffffff;
+                    flex-shrink: 0;
+                }
+
+                /* Department Showcase */
+                .nut-dept-card {
+                    background: #ffffff;
+                    border: 1px solid var(--nut-border);
+                    border-radius: 12px;
+                    padding: 1.5rem;
+                    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+                    transition: all 0.2s ease;
+                    height: 100%;
+                }
+                .nut-dept-card:hover {
+                    border-color: #60a5fa;
+                    box-shadow: 0 12px 24px -4px rgba(37, 99, 235, 0.1);
+                    transform: translateY(-2px);
+                }
+
+                /* Feature Showcase */
+                .nut-feature-box {
+                    padding: 2rem;
+                    border-radius: 14px;
+                    background: #ffffff;
+                    border: 1px solid var(--nut-border);
+                    height: 100%;
+                    transition: all 0.2s ease;
+                }
+                .nut-feature-box:hover {
+                    border-color: #93c5fd;
+                    box-shadow: 0 12px 24px -4px rgba(15, 23, 42, 0.08);
+                }
+                .nut-icon-pill {
+                    width: 48px;
+                    height: 48px;
+                    border-radius: 10px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 1.25rem;
+                    margin-bottom: 1.25rem;
+                }
+
+                .nut-section-badge {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 0.4rem;
+                    background: #e0e7ff;
+                    color: #1e3a8a;
+                    border: 1px solid #c7d2fe;
+                    padding: 0.35rem 0.9rem;
+                    border-radius: 9999px;
+                    font-size: 0.8rem;
+                    font-weight: 700;
+                    text-transform: uppercase;
+                    letter-spacing: 0.06em;
+                    margin-bottom: 0.75rem;
+                }
+
+                .nut-footer {
+                    background: var(--nut-navy);
+                    color: #94a3b8;
+                    padding: 4rem 0 2rem;
+                    border-top: 1px solid rgba(255, 255, 255, 0.1);
+                }
+            </style>
+
+            <div id="wrap" class="oe_structure oe_empty">
+
+                <!-- 1. Hero Section -->
+                <section class="nut-hero" id="hero">
+                    <div class="container position-relative">
+                        <div class="row align-items-center">
+                            <div class="col-lg-8">
+                                <div class="nut-badge-pill">
+                                    <i class="fa fa-university text-warning"/>
+                                    <span>Northstar University of Technology • Institutional ERP</span>
+                                </div>
+                                <h1 class="nut-hero-title">
+                                    Shaping the Leaders of Tomorrow's Technological Frontier
+                                </h1>
+                                <p class="nut-hero-desc">
+                                    UniSphere is Northstar University's unified academic ERP — bridging institutional operations, continuous grading, attendance registers, bursar billing, and self-service student portals.
+                                </p>
+                                <div class="d-flex flex-wrap gap-3">
+                                    <t t-if="is_logged_in and is_student">
+                                        <a href="/my/unisphere" class="nut-btn-primary">
+                                            <i class="fa fa-graduation-cap"/> Go to Academic Portal →
+                                        </a>
+                                    </t>
+                                    <t t-elif="is_logged_in and is_admin">
+                                        <a href="/odoo" class="nut-btn-primary">
+                                            <i class="fa fa-tachometer"/> Launch Executive ERP →
+                                        </a>
+                                    </t>
+                                    <t t-else="">
+                                        <a href="/my/unisphere" class="nut-btn-primary">
+                                            <i class="fa fa-graduation-cap"/> Student Portal
+                                        </a>
+                                        <a href="/odoo" class="nut-btn-outline">
+                                            <i class="fa fa-building-o"/> Executive ERP
+                                        </a>
+                                        <a href="#demo-access" class="nut-btn-accent">
+                                            <i class="fa fa-bolt text-warning"/> 1-Click Demo Login
+                                        </a>
+                                    </t>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2. Live Institutional Metric Ribbon -->
+                <section class="nut-metric-ribbon">
+                    <div class="container">
+                        <div class="row g-3">
+                            <div class="col-6 col-md-3">
+                                <div class="nut-metric-card">
+                                    <div class="nut-metric-val"><t t-esc="len(departments)"/></div>
+                                    <div class="nut-metric-label">Academic Departments</div>
+                                    <small class="text-muted d-block mt-1">CS, AI, SE, EE</small>
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-3">
+                                <div class="nut-metric-card">
+                                    <div class="nut-metric-val"><t t-esc="active_term.name if active_term else 'Fall 2024'"/></div>
+                                    <div class="nut-metric-label">Active Academic Term</div>
+                                    <small class="text-success fw-bold d-block mt-1">● Enrollment Active</small>
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-3">
+                                <div class="nut-metric-card">
+                                    <div class="nut-metric-val">75.0%</div>
+                                    <div class="nut-metric-label">Attendance Standard</div>
+                                    <small class="text-muted d-block mt-1">HEC Compliance Rule</small>
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-3">
+                                <div class="nut-metric-card">
+                                    <div class="nut-metric-val">100%</div>
+                                    <div class="nut-metric-label">Continuous Grading</div>
+                                    <small class="text-muted d-block mt-1">Quiz, Midterm, Finals</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 3. Interactive 1-Click Demo Persona Access -->
+                <section class="py-5 mt-4" id="demo-access" style="background-color: #f8fafc;">
+                    <div class="container py-3">
+                        <div class="text-center mb-5">
+                            <div class="nut-section-badge">
+                                <i class="fa fa-bolt text-warning"/> Live Evaluator Access
+                            </div>
+                            <h2 class="fw-bold text-dark" style="font-size: 2.25rem;">Explore UniSphere with Demo Personas</h2>
+                            <p class="text-muted mx-auto" style="max-width: 650px;">
+                                Experience the university system from multiple institutional perspectives with one-click instant sign-in.
+                            </p>
+                        </div>
+
+                        <div class="row g-4">
+                            <!-- Persona 1: Ayesha Malik -->
+                            <div class="col-lg-4">
+                                <div class="nut-persona-card featured">
+                                    <div>
+                                        <div class="d-flex align-items-center justify-content-between mb-3">
+                                            <div class="nut-persona-avatar" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+                                                A
+                                            </div>
+                                            <span class="badge bg-success bg-opacity-10 text-success fw-bold px-2 py-1">
+                                                <i class="fa fa-trophy text-warning me-1"/> Dean's Honor Roll
+                                            </span>
+                                        </div>
+                                        <h5 class="fw-bold text-dark mb-1">Ayesha Malik</h5>
+                                        <div class="text-muted small mb-3">
+                                            <strong>NUT-2024-CS-0142</strong> • BS Computer Science
+                                        </div>
+                                        <p class="text-muted small mb-3">
+                                            High-achieving student profile showing full honors, 4.00 CGPA, 100% session attendance record, and fully settled tuition fees.
+                                        </p>
+                                        <div class="p-3 bg-light rounded mb-3 small">
+                                            <div class="d-flex justify-content-between mb-1">
+                                                <span class="text-muted">Cumulative CGPA:</span>
+                                                <strong class="text-dark">4.00 / 4.00</strong>
+                                            </div>
+                                            <div class="d-flex justify-content-between mb-1">
+                                                <span class="text-muted">Attendance Health:</span>
+                                                <strong class="text-success">100.0% (Met)</strong>
+                                            </div>
+                                            <div class="d-flex justify-content-between">
+                                                <span class="text-muted">Bursar Account:</span>
+                                                <strong class="text-success">$0.00 (Clear)</strong>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <form action="/web/login" method="post" class="mt-2">
+                                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                        <input type="hidden" name="login" value="student.ayesha@northstar.edu"/>
+                                        <input type="hidden" name="password" value="student123"/>
+                                        <input type="hidden" name="redirect" value="/my/unisphere"/>
+                                        <button type="submit" class="btn btn-primary w-100 fw-bold py-2 shadow-sm">
+                                            <i class="fa fa-bolt me-1 text-warning"/> Sign In as Ayesha →
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <!-- Persona 2: Muhammad Usman -->
+                            <div class="col-lg-4">
+                                <div class="nut-persona-card">
+                                    <div>
+                                        <div class="d-flex align-items-center justify-content-between mb-3">
+                                            <div class="nut-persona-avatar" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
+                                                U
+                                            </div>
+                                            <span class="badge bg-danger bg-opacity-10 text-danger fw-bold px-2 py-1">
+                                                <i class="fa fa-exclamation-triangle me-1"/> Academic Risk Alert
+                                            </span>
+                                        </div>
+                                        <h5 class="fw-bold text-dark mb-1">Muhammad Usman</h5>
+                                        <div class="text-muted small mb-3">
+                                            <strong>NUT-2024-AI-0105</strong> • BS Artificial Intelligence
+                                        </div>
+                                        <p class="text-muted small mb-3">
+                                            Student profile highlighting institutional alert states: attendance warning (&lt; 75%), overdue fee challan ($1,500), and bank deposit instructions.
+                                        </p>
+                                        <div class="p-3 bg-light rounded mb-3 small">
+                                            <div class="d-flex justify-content-between mb-1">
+                                                <span class="text-muted">Cumulative CGPA:</span>
+                                                <strong class="text-dark">0.00 / 4.00</strong>
+                                            </div>
+                                            <div class="d-flex justify-content-between mb-1">
+                                                <span class="text-muted">Attendance Health:</span>
+                                                <strong class="text-danger">50.0% (&lt; 75% Alert)</strong>
+                                            </div>
+                                            <div class="d-flex justify-content-between">
+                                                <span class="text-muted">Bursar Account:</span>
+                                                <strong class="text-danger">$1,500.00 (Overdue)</strong>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <form action="/web/login" method="post" class="mt-2">
+                                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                        <input type="hidden" name="login" value="student.usman@northstar.edu"/>
+                                        <input type="hidden" name="password" value="student123"/>
+                                        <input type="hidden" name="redirect" value="/my/unisphere"/>
+                                        <button type="submit" class="btn btn-warning w-100 fw-bold py-2 text-dark shadow-sm">
+                                            <i class="fa fa-bolt me-1"/> Sign In as Usman →
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <!-- Persona 3: Mikail Khan (Admin) -->
+                            <div class="col-lg-4">
+                                <div class="nut-persona-card">
+                                    <div>
+                                        <div class="d-flex align-items-center justify-content-between mb-3">
+                                            <div class="nut-persona-avatar" style="background: linear-gradient(135deg, #1e3a8a 0%, #000f3f 100%);">
+                                                M
+                                            </div>
+                                            <span class="badge bg-primary bg-opacity-10 text-primary fw-bold px-2 py-1">
+                                                <i class="fa fa-shield me-1"/> University Administrator
+                                            </span>
+                                        </div>
+                                        <h5 class="fw-bold text-dark mb-1">Mikail Khan</h5>
+                                        <div class="text-muted small mb-3">
+                                            <strong>Registrar &amp; Bursar Administration</strong>
+                                        </div>
+                                        <p class="text-muted small mb-3">
+                                            Institutional management view with full ERP privileges: OWL Executive Dashboard, department capacities, session attendance wizards, and fee realization.
+                                        </p>
+                                        <div class="p-3 bg-light rounded mb-3 small">
+                                            <div class="d-flex justify-content-between mb-1">
+                                                <span class="text-muted">ERP Action:</span>
+                                                <strong class="text-dark">Executive OWL Dashboard</strong>
+                                            </div>
+                                            <div class="d-flex justify-content-between mb-1">
+                                                <span class="text-muted">Module Permissions:</span>
+                                                <strong class="text-primary">Registrar, Dean, Bursar</strong>
+                                            </div>
+                                            <div class="d-flex justify-content-between">
+                                                <span class="text-muted">Access Level:</span>
+                                                <strong class="text-success">Superuser Admin</strong>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <form action="/web/login" method="post" class="mt-2">
+                                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                        <input type="hidden" name="login" value="khanmikail1002@gmail.com"/>
+                                        <input type="hidden" name="password" value="admin123"/>
+                                        <input type="hidden" name="redirect" value="/odoo"/>
+                                        <button type="submit" class="btn btn-dark w-100 fw-bold py-2 shadow-sm">
+                                            <i class="fa fa-tachometer me-1 text-primary"/> Sign In as Admin →
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 4. Academic Departments & Degree Programs -->
+                <section class="py-5" id="programs">
+                    <div class="container py-3">
+                        <div class="text-center mb-5">
+                            <div class="nut-section-badge">
+                                <i class="fa fa-book text-primary"/> Academic Catalog
+                            </div>
+                            <h2 class="fw-bold text-dark" style="font-size: 2.25rem;">Academic Departments &amp; Degree Programs</h2>
+                            <p class="text-muted mx-auto" style="max-width: 650px;">
+                                Rigorous technological curricula engineered for industry leadership, scientific research, and real-world impact.
+                            </p>
+                        </div>
+
+                        <div class="row g-4">
+                            <t t-foreach="departments" t-as="dept">
+                                <div class="col-md-6 col-lg-3">
+                                    <div class="nut-dept-card">
+                                        <div class="d-flex align-items-center justify-content-between mb-3">
+                                            <span class="badge bg-primary px-2 py-1 font-monospace fw-bold"><t t-esc="dept.code"/></span>
+                                            <small class="text-muted fw-bold">Active Faculty</small>
+                                        </div>
+                                        <h5 class="fw-bold text-dark mb-2"><t t-esc="dept.name"/></h5>
+                                        <p class="text-muted small mb-3">
+                                            Chair: <strong><t t-esc="dept.head_of_department_id.name if dept.head_of_department_id else 'Department Chair'"/></strong>
+                                        </p>
+                                        <div class="border-top pt-2 mt-auto d-flex justify-content-between align-items-center small text-muted">
+                                            <span>Degree Code:</span>
+                                            <strong class="text-dark">BS-<t t-esc="dept.code"/></strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 5. UniSphere Digital Campus Architecture -->
+                <section class="py-5" id="campus-features" style="background-color: #f8fafc;">
+                    <div class="container py-3">
+                        <div class="text-center mb-5">
+                            <div class="nut-section-badge">
+                                <i class="fa fa-cubes text-primary"/> Institutional Core
+                            </div>
+                            <h2 class="fw-bold text-dark" style="font-size: 2.25rem;">UniSphere Digital Campus Architecture</h2>
+                            <p class="text-muted mx-auto" style="max-width: 650px;">
+                                Built natively on Odoo 19 with enterprise-grade row-level security and responsive modern interfaces.
+                            </p>
+                        </div>
+
+                        <div class="row g-4">
+                            <div class="col-md-6 col-lg-3">
+                                <div class="nut-feature-box">
+                                    <div class="nut-icon-pill bg-primary bg-opacity-10 text-primary">
+                                        <i class="fa fa-graduation-cap"/>
+                                    </div>
+                                    <h5 class="fw-bold text-dark mb-2">Student Self-Service</h5>
+                                    <p class="text-muted small mb-0">
+                                        Dedicated student portal displaying real-time CGPA, attendance health, continuous gradebook, and downloadable fee challans.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-3">
+                                <div class="nut-feature-box">
+                                    <div class="nut-icon-pill bg-success bg-opacity-10 text-success">
+                                        <i class="fa fa-tachometer"/>
+                                    </div>
+                                    <h5 class="fw-bold text-dark mb-2">Executive Dashboard</h5>
+                                    <p class="text-muted small mb-0">
+                                        OWL 2 client action visualizing live student enrollment, department capacity, fee realization velocity, and compliance warnings.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-3">
+                                <div class="nut-feature-box">
+                                    <div class="nut-icon-pill bg-info bg-opacity-10 text-info">
+                                        <i class="fa fa-calendar-check-o"/>
+                                    </div>
+                                    <h5 class="fw-bold text-dark mb-2">Attendance Registers</h5>
+                                    <p class="text-muted small mb-0">
+                                        Session-based marking with duplicate prevention, automatic student attendance rate calculation, and institutional 75% threshold alerts.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-3">
+                                <div class="nut-feature-box">
+                                    <div class="nut-icon-pill bg-warning bg-opacity-10 text-warning">
+                                        <i class="fa fa-money"/>
+                                    </div>
+                                    <h5 class="fw-bold text-dark mb-2">Scoped Bursar Ledger</h5>
+                                    <p class="text-muted small mb-0">
+                                        Automated challan sequence generation, multi-term payment recording, bank deposit instructions, and real-time balance calculations.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 6. Footer -->
+                <footer class="nut-footer">
+                    <div class="container">
+                        <div class="row g-4 mb-4">
+                            <div class="col-lg-4">
+                                <div class="d-flex align-items-center gap-2 mb-3">
+                                    <img src="/unisphere_university/static/description/icon.png" alt="NUT Logo" style="width: 36px; height: 36px;"/>
+                                    <h5 class="text-white fw-bold mb-0">Northstar University</h5>
+                                </div>
+                                <p class="small text-muted mb-3">
+                                    Northstar University of Technology (NUT) is dedicated to advancing technological education, innovative engineering, and interdisciplinary research.
+                                </p>
+                                <span class="badge bg-primary px-2 py-1 text-uppercase" style="font-size: 0.75rem;">
+                                    HEC Accredited Institution
+                                </span>
+                            </div>
+                            <div class="col-6 col-lg-2 offset-lg-2">
+                                <h6 class="text-white fw-bold mb-3">UniSphere Portals</h6>
+                                <ul class="list-unstyled small">
+                                    <li class="mb-2"><a href="/my/unisphere" class="text-muted text-decoration-none">Student Portal</a></li>
+                                    <li class="mb-2"><a href="/my/unisphere/fees" class="text-muted text-decoration-none">Fee Challans</a></li>
+                                    <li class="mb-2"><a href="/odoo" class="text-muted text-decoration-none">Executive ERP</a></li>
+                                    <li class="mb-2"><a href="#demo-access" class="text-muted text-decoration-none">Demo Personas</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-6 col-lg-2">
+                                <h6 class="text-white fw-bold mb-3">Departments</h6>
+                                <ul class="list-unstyled small">
+                                    <li class="mb-2"><span class="text-muted">Computer Science</span></li>
+                                    <li class="mb-2"><span class="text-muted">Artificial Intelligence</span></li>
+                                    <li class="mb-2"><span class="text-muted">Software Engineering</span></li>
+                                    <li class="mb-2"><span class="text-muted">Electrical Engineering</span></li>
+                                </ul>
+                            </div>
+                            <div class="col-lg-2">
+                                <h6 class="text-white fw-bold mb-3">Campus Location</h6>
+                                <p class="small text-muted mb-2">
+                                    The Innovation Hub, Sector H-12, Northstar Academic Park, Islamabad.
+                                </p>
+                                <small class="text-muted">Phone: +92 51 555 0100</small>
+                            </div>
+                        </div>
+                        <div class="border-top border-secondary border-opacity-25 pt-3 d-flex flex-wrap justify-content-between align-items-center small">
+                            <span class="text-muted">© 2026 Northstar University of Technology. All rights reserved.</span>
+                            <span class="text-muted">UniSphere ERP built natively on Odoo 19 Community</span>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </t>
+    </template>
+
+    <!-- ============================================================= -->
+    <!-- 2. LOGIN PAGE ENHANCEMENT (BRANDING & 1-CLICK DEMO BUTTONS)  -->
+    <!-- ============================================================= -->
+    <template id="unisphere_login_enhancement" inherit_id="web.login" priority="20">
+        <!-- University Brand Banner above login -->
+        <xpath expr="//div[@id='oe_structure_login_top']" position="inside">
+            <div class="text-center mb-3">
+                <h5 class="fw-bold text-dark mb-0">Northstar University of Technology</h5>
+                <small class="text-muted">Institutional Single Sign-On • UniSphere ERP</small>
+            </div>
+
+            <!-- Quick Demo Credentials Box -->
+            <div class="card border bg-light shadow-sm mb-3 text-start" style="border-radius: 10px;">
+                <div class="card-body p-2">
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                        <small class="fw-bold text-dark"><i class="fa fa-bolt text-warning me-1"/> Quick Demo Sign-In:</small>
+                        <span class="badge bg-primary" style="font-size: 0.65rem;">1-Click</span>
+                    </div>
+                    <div class="d-grid gap-1">
+                        <button type="button" class="btn btn-outline-primary btn-sm text-start py-1 px-2 d-flex justify-content-between align-items-center" onclick="autofillLogin('student.ayesha@northstar.edu', 'student123', '/my/unisphere')">
+                            <span><i class="fa fa-graduation-cap me-1"/> <strong>Ayesha</strong> (Student • 4.00)</span>
+                            <small class="text-muted">Fill →</small>
+                        </button>
+                        <button type="button" class="btn btn-outline-warning btn-sm text-start py-1 px-2 d-flex justify-content-between align-items-center text-dark" onclick="autofillLogin('student.usman@northstar.edu', 'student123', '/my/unisphere')">
+                            <span><i class="fa fa-exclamation-triangle me-1 text-danger"/> <strong>Usman</strong> (Student • Alert)</span>
+                            <small class="text-muted">Fill →</small>
+                        </button>
+                        <button type="button" class="btn btn-outline-dark btn-sm text-start py-1 px-2 d-flex justify-content-between align-items-center" onclick="autofillLogin('khanmikail1002@gmail.com', 'admin123', '/odoo')">
+                            <span><i class="fa fa-shield me-1 text-primary"/> <strong>Admin</strong> (Registrar / ERP)</span>
+                            <small class="text-muted">Fill →</small>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <script type="text/javascript">
+                function autofillLogin(login, password, redirect) {
+                    var loginInput = document.querySelector('input[name="login"]');
+                    var passInput = document.querySelector('input[name="password"]');
+                    var redirInput = document.querySelector('input[name="redirect"]');
+                    var form = document.querySelector('form.oe_login_form');
+                    
+                    if (loginInput) loginInput.value = login;
+                    if (passInput) passInput.value = password;
+                    if (redirInput &amp;&amp; redirect) redirInput.value = redirect;
+                    
+                    // Unhide form if Odoo user_switch component hid it
+                    if (form) {
+                        form.classList.remove('d-none');
+                        form.submit();
+                    }
+                }
+            </script>
+        </xpath>
+
+        <!-- Homepage link below login buttons -->
+        <xpath expr="//div[@id='oe_structure_login_bottom']" position="inside">
+            <div class="text-center mt-3">
+                <a href="/" class="text-decoration-none small text-muted">
+                    <i class="fa fa-arrow-left me-1"/> Return to University Homepage
+                </a>
+            </div>
+        </xpath>
+    </template>
+</odoo>
