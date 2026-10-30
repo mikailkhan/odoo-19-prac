@@ -29,6 +29,9 @@ Designed with an enterprise architectural foundation, UniSphere bridges internal
 ### Starting the Environment
 The application is pre-configured with Docker Compose:
 ```bash
+# Create your local config from the template, then edit the placeholder passwords
+cp odoo.conf.example odoo.conf
+
 # Start PostgreSQL and Odoo 19 containers
 docker compose up -d
 
@@ -43,7 +46,7 @@ The system will be accessible at:
 ### Default Administrative Credentials
 - **Database:** `nutech`
 - **Email / Login:** `your-email@example.com`
-- **Master Admin Password:** `admin123` (configured in `odoo.conf`)
+- **Master Admin Password:** `your-master-password` (the `admin_passwd` value in your local `odoo.conf`)
 
 ---
 

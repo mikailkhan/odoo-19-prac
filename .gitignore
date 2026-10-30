@@ -18,6 +18,7 @@ Thumbs.db
 # Environment and local configs / secrets
 *.env
 *.local
+odoo.conf
 
 # Odoo temporary files
 *.dump
